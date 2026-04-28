@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Narrative</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+
+body{
+margin:0;
+font-family:'Segoe UI', sans-serif;
+background:linear-gradient(135deg,#f5e6c8,#e8d2a8);
+min-height:100vh;
+}
+
+.quiz-container{
+max-width:900px;
+margin:60px auto;
+background:rgba(255,255,255,0.5);
+backdrop-filter:blur(10px);
+padding:30px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.quiz-container h1{
+text-align:center;
+margin-bottom:20px;
+}
+
+.question{
+margin:20px 0;
+}
+
+.options label{
+display:block;
+margin:6px 0;
+cursor:pointer;
+}
+
+.submit-btn{
+margin-top:20px;
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:#7a4b1f;
+color:white;
+cursor:pointer;
+font-size:16px;
+}
+
+.result{
+margin-top:20px;
+font-weight:bold;
+}
+
+.back-btn{
+position:fixed;
+bottom:20px;
+left:20px;
+padding:12px 20px;
+background:#6c63ff;
+color:white;
+border:none;
+border-radius:30px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+<h1>Quiz: Narrative Text</h1>
+
+<form id="quizForm">
+
+<!-- soal tetap -->
+<!-- (tidak diubah, sama seperti punyamu) -->
+
+<div class="question">
+<p>1. What is a narrative text?</p>
+<div class="options">
+<label><input type="radio" name="q1" value="A"> A. A text that explains instructions</label>
+<label><input type="radio" name="q1" value="B"> B. A text that tells a story chronologically</label>
+<label><input type="radio" name="q1" value="C"> C. A text that describes a place</label>
+<label><input type="radio" name="q1" value="D"> D. A text that gives opinion</label>
+</div>
+</div>
+
+<div class="question">
+<p>2. What is the main function of a narrative text?</p>
+<div class="options">
+<label><input type="radio" name="q2" value="A"> A. To inform</label>
+<label><input type="radio" name="q2" value="B"> B. To persuade</label>
+<label><input type="radio" name="q2" value="C"> C. To entertain</label>
+<label><input type="radio" name="q2" value="D"> D. To describe</label>
+</div>
+</div>
+
+<div class="question">
+<p>3. What does Orientation tell us?</p>
+<div class="options">
+<label><input type="radio" name="q3" value="A"> A. The problem</label>
+<label><input type="radio" name="q3" value="B"> B. The solution</label>
+<label><input type="radio" name="q3" value="C"> C. Characters, time, place</label>
+<label><input type="radio" name="q3" value="D"> D. The ending</label>
+</div>
+</div>
+
+<div class="question">
+<p>4. What happens in Complication?</p>
+<div class="options">
+<label><input type="radio" name="q4" value="A"> A. Story ends</label>
+<label><input type="radio" name="q4" value="B"> B. Problem appears</label>
+<label><input type="radio" name="q4" value="C"> C. Characters introduced</label>
+<label><input type="radio" name="q4" value="D"> D. Moral explained</label>
+</div>
+</div>
+
+<div class="question">
+<p>5. What is Resolution?</p>
+<div class="options">
+<label><input type="radio" name="q5" value="A"> A. Beginning</label>
+<label><input type="radio" name="q5" value="B"> B. Problem appears</label>
+<label><input type="radio" name="q5" value="C"> C. Problem solved</label>
+<label><input type="radio" name="q5" value="D"> D. Setting</label>
+</div>
+</div>
+
+<div class="question">
+<p>6. What is the main conflict in Surabaya story?</p>
+<div class="options">
+<label><input type="radio" name="q6" value="A"> A. Become friends</label>
+<label><input type="radio" name="q6" value="B"> B. Live happily</label>
+<label><input type="radio" name="q6" value="C"> C. Fight over food & break promise</label>
+<label><input type="radio" name="q6" value="D"> D. Go to market</label>
+</div>
+</div>
+
+<button type="button" class="submit-btn" onclick="checkAnswers()">Submit</button>
+
+</form>
+
+<div id="result" class="result"></div>
+
+</div>
+
+<button class="back-btn" onclick="goBack()">⬅ Back</button>
+
+<script>
+
+/* JAWABAN */
+const answerKey = {
+q1:"B",
+q2:"C",
+q3:"C",
+q4:"B",
+q5:"C",
+q6:"C"
+};
+
+function checkAnswers(){
+
+let score = 0;
+let total = 6;
+let answers = {};
+let resultText = "";
+
+for(let q in answerKey){
+
+let userAnswer = document.querySelector(`input[name="${q}"]:checked`);
+
+if(userAnswer){
+
+answers[q] = userAnswer.value;
+
+if(userAnswer.value === answerKey[q]){
+score++;
+resultText += `✔ ${q} correct<br>`;
+}else{
+resultText += `✖ ${q} wrong<br>`;
+}
+
+}else{
+resultText += `⚠ ${q} not answered<br>`;
+}
+
+}
+
+document.getElementById("result").innerHTML =
+`Score: ${score}/${total}<br><br>` + resultText;
+
+/* SIMPAN */
+saveQuiz(score,total,answers);
+
+}
+
+
+/* 🔥 FIX STORAGE */
+function saveQuiz(score,total,answers){
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let id = localStorage.getItem("userId");
+
+let index = students.findIndex(s => s.id == id);
+if(index === -1){
+
+students.push({
+nama,
+kelas,
+quiz2:{
+score,
+total,
+answers
+}
+});
+
+}else{
+
+students[index].quiz2 = {
+score,
+total,
+answers
+};
+
+}
+
+localStorage.setItem("students", JSON.stringify(students));
+
+}
+
+
+/* 🔥 FIX BACK BUTTON */
+function goBack(){
+window.location.href = "section4.html"; // atau menuMateri.html
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malin Kundang</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#f5e6c8,#e8d2a8);
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1{text-align:center;}
+
+.section-title{
+margin-top:20px;
+font-weight:bold;
+color:#7a4b1f;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#7a4b1f;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+textarea{
+width:100%;
+height:100px;
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+}
+
+.vocab{
+color:#d35400;
+font-weight:bold;
+cursor:pointer;
+}
+
+.popup{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:black;
+color:white;
+padding:10px 20px;
+border-radius:10px;
+display:none;
+z-index:9999;
+}
+
+/* NAV BACK BUTTON */
+.nav-buttons{
+position:fixed;
+bottom:20px;
+left:0;
+width:100%;
+display:flex;
+justify-content:flex-start;
+padding:0 20px;
+z-index:9999;
+pointer-events:none;
+}
+
+.nav-btn{
+pointer-events:auto;
+padding:12px 22px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-weight:600;
+background:linear-gradient(135deg,#6c63ff,#a18cd1);
+color:white;
+transition:0.3s;
+}
+
+.nav-btn:hover{
+transform:scale(1.1);
+box-shadow:0 0 15px rgba(108,99,255,0.6);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Malin Kundang</h1>
+
+<button onclick="toggleTranslate()">🌐 Translate</button>
+
+<audio controls style="width:100%; margin-top:10px;">
+<source src="audio/Malin Kundang.mp3">
+</audio>
+
+<div class="section-title">Orientation</div>
+<p id="orientation"></p>
+
+<div class="section-title">Complication</div>
+<p id="complication"></p>
+
+<div class="section-title">Resolution</div>
+<p id="resolution"></p>
+
+<hr>
+
+<h3>Create Your Own Story</h3>
+
+<textarea placeholder="Orientation..."></textarea>
+<textarea placeholder="Complication..."></textarea>
+<textarea placeholder="Resolution..."></textarea>
+
+<button onclick="submitStory()">Kirim Cerita</button>
+
+</div>
+
+<!-- BACK BUTTON -->
+<div class="nav-buttons">
+<button class="nav-btn" onclick="goBack()">⬅ Back</button>
+</div>
+
+<div id="popup" class="popup"></div>
+
+<script>
+
+/* ================= DATA ================= */
+
+let isEnglish = true;
+
+const data = {
+
+orientation:{
+en:`A long time ago, in a small village near the beach in West Sumatra, there lived a woman and her son, Malin Kundang. Malin and his mother were very poor, but they lived happily. Malin was a diligent and strong boy who often went to the sea to catch fish to help his mother.`,
+id:`Dahulu kala, di sebuah desa kecil dekat pantai di Sumatera Barat, hiduplah seorang wanita dan putranya, Malin Kundang. Malin dan ibunya sangat miskin, tetapi mereka hidup bahagia. Malin adalah anak yang rajin dan kuat yang sering pergi ke laut untuk menangkap ikan demi membantu ibunya.`
+},
+
+complication:{
+en:`One day, Malin decided to go abroad by joining a big ship to become a wealthy man. Many years later, he became a very rich merchant with a huge ship and many servants. When he returned to his village, his old mother ran to the beach to meet him. She was so happy and wanted to hug him. However, Malin felt ashamed because his mother wore old and dirty clothes. In front of his beautiful wife, he denied his mother and shouted at her . "You are not my mother! My mother died a long time ago!" he said loudly. His mother cried and felt heartbroken. Because of his cruelty, she prayed to God to punish her son.`,
+id:`Suatu hari, Malin memutuskan untuk merantau dengan ikut kapal besar agar menjadi orang kaya. Bertahun-tahun kemudian, ia menjadi pedagang yang sangat kaya dengan kapal besar dan banyak pelayan. Ketika ia kembali ke desanya, ibunya yang sudah tua lari ke pantai untuk menemuinya. Dia sangat senang dan ingin memeluknya. Namun, Malin merasa malu karena ibunya mengenakan pakaian tua dan kotor. Di depan istrinya yang cantik, ia menyangkal ibunya dan meneriakinya. "Kamu bukan ibuku! Ibuku sudah lama meninggal!" katanya dengan keras. Ibunya menangis dan merasa sangat sakit hati. Karena kekejamannya, ia berdoa kepada Tuhan untuk menghukum putranya.`
+},
+
+resolution:{
+en:`Suddenly, a violent storm hit the sea and destroyed Malin’s big ship. Malin realized his big mistake and knelt down to ask for forgiveness, but it was too late. The thunder struck him, and finally, his body turned into a stone.`,
+id:`Tiba-tiba, badai dahsyat menghantam laut dan menghancurkan kapal besar Malin. Malin menyadari kesalahan besarnya dan berlutut untuk meminta maaf, tetapi semuanya sudah terlambat. Guntur menyambarnya, dan akhirnya, tubuhnya berubah menjadi batu.`
+}
+
+};
+
+/* ================= LOAD TEXT ================= */
+
+function loadText(){
+document.getElementById("orientation").innerText = data.orientation.en;
+document.getElementById("complication").innerText = data.complication.en;
+document.getElementById("resolution").innerText = data.resolution.en;
+applyVocab();
+}
+
+/* ================= TRANSLATE ================= */
+
+function toggleTranslate(){
+
+if(isEnglish){
+document.getElementById("orientation").innerText = data.orientation.id;
+document.getElementById("complication").innerText = data.complication.id;
+document.getElementById("resolution").innerText = data.resolution.id;
+}else{
+loadText();
+}
+
+isEnglish = !isEnglish;
+}
+
+/* ================= VOCAB ================= */
+
+const vocabList = {
+"lived":"Tinggal (V1: Live)",
+"went":"Pergi (V1: Go)",
+"became":"Menjadi (V1: Become)",
+"denied":"Menyangkal (V1: Deny)",
+"turned":"Berubah (V1: Turn)"
+};
+
+function applyVocab(){
+
+["orientation","complication","resolution"].forEach(id=>{
+let el = document.getElementById(id);
+let text = el.innerText;
+
+for(let word in vocabList){
+let regex = new RegExp("\\b"+word+"\\b","g");
+text = text.replace(regex, `<span class="vocab" onclick="showPopup('${vocabList[word]}')">${word}</span>`);
+}
+
+el.innerHTML = text;
+});
+
+}
+
+/* ================= POPUP ================= */
+
+function showPopup(text){
+let popup = document.getElementById("popup");
+popup.innerText = text;
+popup.style.display="block";
+
+setTimeout(()=>{
+popup.style.display="none";
+},2000);
+}
+
+/* ================= BACK ================= */
+
+function goBack(){
+window.location.href = "section10.html";
+}
+
+/* ================= SUBMIT ================= */
+
+function submitStory(){
+
+let orientation = document.querySelectorAll("textarea")[0].value;
+let complication = document.querySelectorAll("textarea")[1].value;
+let resolution = document.querySelectorAll("textarea")[2].value;
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let id = localStorage.getItem("userId");
+
+let index = students.findIndex(s => s.id == id);
+if(index === -1){
+students.push({
+nama,
+kelas,
+stories: []
+});
+index = students.length - 1;
+}
+
+if(!students[index].stories){
+students[index].stories = [];
+}
+
+students[index].stories.push({
+cerita: "malin", // ganti sesuai file
+orientation,
+complication,
+resolution
+});
+
+localStorage.setItem("students", JSON.stringify(students));
+
+alert("Cerita tersimpan!");
+}
+
+/* INIT */
+loadText();
+
+</script>
+
+</body>
+</html>

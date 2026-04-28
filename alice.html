@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alice in Wonderland</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#f5e6c8,#e8d2a8);
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1{text-align:center;}
+
+.section-title{
+margin-top:20px;
+font-weight:bold;
+color:#7a4b1f;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#7a4b1f;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+textarea{
+width:100%;
+height:100px;
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+}
+
+.vocab{
+color:#d35400;
+font-weight:bold;
+cursor:pointer;
+}
+
+.popup{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:black;
+color:white;
+padding:10px 20px;
+border-radius:10px;
+display:none;
+z-index:9999;
+}
+
+.nav-buttons{
+position:fixed;
+bottom:20px;
+left:0;
+width:100%;
+display:flex;
+justify-content:flex-start;
+padding:0 20px;
+z-index:9999;
+pointer-events:none;
+}
+
+.nav-btn{
+pointer-events:auto;
+padding:12px 22px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-weight:600;
+background:linear-gradient(135deg,#6c63ff,#a18cd1);
+color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Alice in Wonderland</h1>
+
+<button onclick="toggleTranslate()">🌐 Translate</button>
+
+<audio controls style="width:100%; margin-top:10px;">
+<source src="audio/Alice in Wonderland.mp3">
+</audio>
+
+<div class="section-title">Orientation</div>
+<p id="orientation"></p>
+
+<div class="section-title">Complication</div>
+<p id="complication"></p>
+
+<div class="section-title">Resolution</div>
+<p id="resolution"></p>
+
+<hr>
+
+<h3>Create Your Own Story</h3>
+<textarea placeholder="Orientation..."></textarea>
+<textarea placeholder="Complication..."></textarea>
+<textarea placeholder="Resolution..."></textarea>
+<button onclick="submitStory()">Kirim Cerita</button>
+
+</div>
+
+<div class="nav-buttons">
+<button class="nav-btn" onclick="goBack()">⬅ Back</button>
+</div>
+
+<div id="popup" class="popup"></div>
+
+<script>
+
+let isEnglish = true;
+
+/* ================= DATA ASLI (TIDAK DIUBAH) ================= */
+
+const data = {
+
+orientation:{
+en:`Once upon a time, a girl named Alice sat by the riverbank with her sister. She felt bored because she had nothing to do. Suddenly, a White Rabbit with pink eyes ran past her. The rabbit took a watch out of its pocket and said, "Oh dear! I shall be too late!" Alice was very curious, so she stood up and followed the rabbit across the field.`,
+id:`Dahulu kala, seorang gadis bernama Alice duduk di tepi sungai bersama kakak perempuannya. Dia merasa bosan karena tidak ada yang bisa dilakukan. Tiba-tiba, seekor Kelinci Putih dengan mata merah muda berlari melewatinya. Kelinci itu mengeluarkan jam saku dari sakunya dan berkata, "Aduh! Aku akan terlambat!" Alice sangat penasaran, jadi dia berdiri dan mengikuti kelinci itu melintasi lapangan.`
+},
+
+complication:{
+en:`Alice followed the rabbit into a large rabbit hole and suddenly she fell down a very deep well. In Wonderland, she drank a strange liquid and became very small. Then, she ate a cake and grew as tall as a house. She met many strange characters like the Cheshire Cat, the Mad Hatter, and the Queen of Hearts. The Queen of Hearts was very angry and shouted at everyone. During a trial, the Queen ordered her soldiers to catch Alice. Alice felt frightened as the cards flew all around her. She tried to fight them back, but there were too many of them.`,
+id:`Alice mengikuti kelinci itu ke dalam lubang kelinci yang besar dan tiba-tiba dia jatuh ke dalam sumur yang sangat dalam. Di Wonderland, dia meminum cairan aneh dan menjadi sangat kecil. Kemudian, dia makan kue dan tumbuh setinggi rumah. Dia bertemu banyak karakter aneh seperti Kucing Cheshire, Mad Hatter, dan Ratu Hati. Ratu Hati sangat marah dan meneriaki semua orang. Dalam sebuah persidangan, sang Ratu memerintahkan prajuritnya untuk menangkap Alice. Alice merasa ketakutan saat kartu-kartu itu terbang di sekelilingnya. Dia mencoba melawan mereka, tetapi jumlah mereka terlalu banyak.`
+},
+
+resolution:{
+en:`Suddenly, Alice opened her eyes and found herself back on the riverbank. She realized that all the strange adventures were just a dream. She told her sister about the wonderful Wonderland and felt very happy.`,
+id:`Tiba-tiba, Alice membuka matanya dan mendapati dirinya kembali di tepi sungai. Dia menyadari bahwa semua petualangan aneh itu hanyalah mimpi. Dia memberi tahu kakaknya tentang Wonderland yang indah dan merasa sangat bahagia.`
+}
+
+};
+
+/* ================= VOCAB ================= */
+
+const vocabList = {
+"sat":"Duduk (V1: sit)",
+"felt":"Merasa (V1: feel)",
+"had":"Memiliki (V1: have)",
+"ran":"Berlari (V1: run)",
+"took":"Mengambil (V1: take)",
+"said":"Berkata (V1: say)",
+"was":"Adalah (V1: is/am)",
+"were":"Adalah (V1: are)",
+"stood":"Berdiri (V1: stand)",
+"followed":"Mengikuti (V1: follow)",
+"fell":"Jatuh (V1: fall)",
+"drank":"Minum (V1: drink)",
+"became":"Menjadi (V1: become)",
+"ate":"Makan (V1: eat)",
+"grew":"Tumbuh (V1: grow)",
+"met":"Bertemu (V1: meet)",
+"shouted":"Berteriak (V1: shout)",
+"ordered":"Memerintah (V1: order)",
+"flew":"Terbang (V1: fly)",
+"tried":"Mencoba (V1: try)",
+"opened":"Membuka (V1: open)",
+"found":"Menemukan (V1: find)",
+"realized":"Menyadari (V1: realize)",
+"told":"Memberitahu (V1: tell)"
+};
+
+/* ================= FUNCTION ================= */
+
+function applyVocab(text){
+for(let word in vocabList){
+let regex = new RegExp("\\b"+word+"\\b","gi");
+text = text.replace(regex, `<span class="vocab" onclick="showPopup('${vocabList[word]}')">${word}</span>`);
+}
+return text;
+}
+
+function render(){
+let lang = isEnglish ? "en" : "id";
+document.getElementById("orientation").innerHTML = applyVocab(data.orientation[lang]);
+document.getElementById("complication").innerHTML = applyVocab(data.complication[lang]);
+document.getElementById("resolution").innerHTML = applyVocab(data.resolution[lang]);
+}
+
+function toggleTranslate(){
+isEnglish = !isEnglish;
+render();
+}
+
+function showPopup(text){
+let popup = document.getElementById("popup");
+popup.innerText = text;
+popup.style.display="block";
+setTimeout(()=>popup.style.display="none",2000);
+}
+
+function goBack(){
+window.location.href="section10.html";
+}
+
+function submitStory(){
+
+let orientation = document.querySelectorAll("textarea")[0].value;
+let complication = document.querySelectorAll("textarea")[1].value;
+let resolution = document.querySelectorAll("textarea")[2].value;
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let id = localStorage.getItem("userId");
+
+let index = students.findIndex(s => s.id == id);
+if(index === -1){
+students.push({
+nama,
+kelas,
+stories: []
+});
+index = students.length - 1;
+}
+
+if(!students[index].stories){
+students[index].stories = [];
+}
+
+students[index].stories.push({
+cerita: "alice", // ganti sesuai file
+orientation,
+complication,
+resolution
+});
+
+localStorage.setItem("students", JSON.stringify(students));
+
+alert("Cerita tersimpan!");
+}
+
+render();
+
+</script>
+
+</body>
+</html>

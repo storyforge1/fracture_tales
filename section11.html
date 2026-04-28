@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Teacher Panel</title>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<style>
+body{
+font-family:sans-serif;
+background:#f5e6c8;
+padding:20px;
+}
+
+.container{
+background:white;
+padding:25px;
+border-radius:15px;
+max-width:1200px;
+margin:auto;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h2{text-align:center;}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+text-align:left;
+font-size:13px;
+}
+
+th{
+background:#6c63ff;
+color:white;
+}
+
+button{
+margin:10px 5px;
+padding:10px 15px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+.excel{background:#28a745;color:white;}
+.clear{background:red;color:white;}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📊 Data Siswa</h2>
+
+<table id="table">
+<thead>
+<tr>
+<th>Nama</th>
+<th>Kelas</th>
+<th>Q1</th>
+<th>Q2</th>
+<th>Q3</th>
+<th>Q4</th>
+<th>Q5</th>
+<th>Total</th>
+<th>Cerita</th>
+<th>Orientation</th>
+<th>Complication</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<button class="excel" onclick="downloadExcel()">Download Excel</button>
+<button class="clear" onclick="clearData()">Clear Data</button>
+
+</div>
+
+<script>
+
+/* 🔥 DEBUG (WAJIB LIHAT INI DI CONSOLE) */
+console.log("ISI LOCALSTORAGE:", localStorage.getItem("students"));
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+let tbody = document.querySelector("#table tbody");
+
+/* 🔥 KALAU KOSONG */
+if(students.length === 0){
+tbody.innerHTML = "<tr><td colspan='12' style='text-align:center;'>⚠ Belum ada data</td></tr>";
+}
+
+/* ================= TAMPILKAN ================= */
+students.forEach(s => {
+
+let q1 = s.quiz1?.score || 0;
+let q2 = s.quiz2?.score || 0;
+let q3 = s.quiz3?.score || 0;
+let q4 = s.quiz4?.score || 0;
+let q5 = s.quiz5?.score || 0;
+
+let total = q1 + q2 + q3 + q4 + q5;
+
+let tr = document.createElement("tr");
+
+tr.innerHTML = `
+<td>${s.nama || "-"}</td>
+<td>${s.kelas || "-"}</td>
+<td>${q1}</td>
+<td>${q2}</td>
+<td>${q3}</td>
+<td>${q4}</td>
+<td>${q5}</td>
+<td><b>${total}</b></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+`;
+
+tbody.appendChild(tr);
+
+/* STORY */
+(s.stories || []).forEach(st => {
+
+let tr2 = document.createElement("tr");
+
+tr2.innerHTML = `
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>${st.cerita || "-"}</td>
+<td>${st.orientation || "-"}</td>
+<td>${st.complication || "-"}</td>
+<td>${st.resolution || "-"}</td>
+`;
+
+tbody.appendChild(tr2);
+
+});
+
+});
+
+
+function downloadExcel(){
+
+let data = [];
+
+students.forEach(s => {
+
+let q1 = s.quiz1?.score || 0;
+let q2 = s.quiz2?.score || 0;
+let q3 = s.quiz3?.score || 0;
+let q4 = s.quiz4?.score || 0;
+let q5 = s.quiz5?.score || 0;
+
+let total = q1 + q2 + q3 + q4 + q5;
+
+/* ========================= */
+/* 🔥 KALAU TIDAK ADA STORY */
+/* ========================= */
+if(!s.stories || s.stories.length === 0){
+
+data.push({
+Nama: s.nama || "-",
+Kelas: s.kelas || "-",
+Q1: q1,
+Q2: q2,
+Q3: q3,
+Q4: q4,
+Q5: q5,
+Total: total,
+Cerita: "-",
+Orientation: "-",
+Complication: "-",
+Resolution: "-"
+});
+
+}else{
+
+/* ========================= */
+/* 🔥 KALAU ADA STORY */
+/* ========================= */
+s.stories.forEach((st,i)=>{
+
+data.push({
+Nama: i===0 ? s.nama : "",
+Kelas: i===0 ? s.kelas : "",
+Q1: i===0 ? q1 : "",
+Q2: i===0 ? q2 : "",
+Q3: i===0 ? q3 : "",
+Q4: i===0 ? q4 : "",
+Q5: i===0 ? q5 : "",
+Total: i===0 ? total : "",
+Cerita: st.cerita || "-",
+Orientation: st.orientation || "-",
+Complication: st.complication || "-",
+Resolution: st.resolution || "-"
+});
+
+});
+
+}
+
+});
+
+/* ========================= */
+/* 🔥 EXPORT */
+/* ========================= */
+let ws = XLSX.utils.json_to_sheet(data);
+let wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, "Data Siswa");
+
+XLSX.writeFile(wb, "data_siswa.xlsx");
+
+}
+
+function clearData(){
+
+let pass = prompt("Masukkan password untuk hapus data:");
+
+/* 🔒 PASSWORD (BISA KAMU GANTI) */
+let adminPass = "admin124";
+
+if(pass === adminPass){
+
+let confirmDelete = confirm("Yakin mau hapus semua data siswa?");
+
+if(confirmDelete){
+localStorage.removeItem("students");
+alert("Data berhasil dihapus!");
+location.reload();
+}
+
+}else{
+alert("Password salah! ❌");
+}
+
+}
+</script>
+
+</body>
+</html>

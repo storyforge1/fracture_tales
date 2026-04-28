@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Choose Your Story</title>
+
+<style>
+body{
+width:100%;
+min-height:100vh;
+background:url("../images/section-10.jpg");
+background-size: 100% 100%;
+background-position: center;
+background-repeat: no-repeat;
+/* overflow:hidden; HAPUS */
+}
+
+/* area klik transparan */
+.click{
+position:absolute;
+cursor:pointer;
+transition:0.3s;
+}
+
+/* efek hover biar keliatan keren */
+.click:hover{
+box-shadow:0 0 25px rgba(255,255,255,0.6);
+border-radius:10px;
+}
+
+/* ===== ATAS ===== */
+.malin{
+top:35%;
+left:19%;
+width:18%;
+height:10%;
+}
+
+.timun{
+top:35%;
+left:40%;
+width:22%;
+height:10%;
+}
+
+.bawang{
+top:36%;
+left:64%;
+width:22%;
+height:10%;
+}
+
+/* ===== BAWAH ===== */
+.golden{
+top:80%;
+left:7%;
+width:18%;
+height:10%;
+}
+
+.borobudur{
+top:80%;
+left:30%;
+width:18%;
+height:10%;
+}
+
+.jack{
+top:80%;
+left:52%;
+width:18%;
+height:10%;
+}
+
+.alice{
+top:80%;
+left:74%;
+width:18%;
+height:10%;
+}
+
+/* tombol teacher */
+.teacher-btn{
+position:absolute;
+top:15px;
+right:15px;
+padding:10px 15px;
+background:black;
+color:white;
+border:none;
+border-radius:12px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.teacher-btn:hover{
+background:#333;
+transform:scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<!-- CLICK AREA -->
+<div class="click malin" onclick="go('malin.html')"></div>
+<div class="click timun" onclick="go('timun.html')"></div>
+<div class="click bawang" onclick="go('bawang.html')"></div>
+<div class="click golden" onclick="go('golden.html')"></div>
+<div class="click borobudur" onclick="go('borobudur.html')"></div>
+<div class="click jack" onclick="go('jack.html')"></div>
+<div class="click alice" onclick="go('alice.html')"></div>
+
+<!-- TEACHER -->
+<button class="teacher-btn" onclick="go('section11.html')">
+📊 Teacher Panel
+</button>
+
+<script>
+function go(page){
+window.location.href = page;
+}
+</script>
+
+</body>
+</html>

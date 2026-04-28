@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bawang Putih</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#f5e6c8,#e8d2a8);
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1{text-align:center;}
+
+.section-title{
+margin-top:20px;
+font-weight:bold;
+color:#7a4b1f;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#7a4b1f;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+textarea{
+width:100%;
+height:100px;
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+}
+
+.vocab{
+color:#d35400;
+font-weight:bold;
+cursor:pointer;
+}
+
+.popup{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:black;
+color:white;
+padding:10px 20px;
+border-radius:10px;
+display:none;
+z-index:9999;
+}
+
+.nav-buttons{
+position:fixed;
+bottom:20px;
+left:0;
+width:100%;
+display:flex;
+justify-content:flex-start;
+padding:0 20px;
+z-index:9999;
+pointer-events:none;
+}
+
+.nav-btn{
+pointer-events:auto;
+padding:12px 22px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-weight:600;
+background:linear-gradient(135deg,#6c63ff,#a18cd1);
+color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Bawang Putih & Bawang Merah</h1>
+
+<button onclick="toggleTranslate()">🌐 Translate</button>
+
+<audio controls style="width:100%; margin-top:10px;">
+<source src="audio/Bawang Putih and Bawang Merah.mp3">
+</audio>
+
+<div class="section-title">Orientation</div>
+<p id="orientation"></p>
+
+<div class="section-title">Complication</div>
+<p id="complication"></p>
+
+<div class="section-title">Resolution</div>
+<p id="resolution"></p>
+
+<hr>
+
+<h3>Create Your Own Story</h3>
+<textarea placeholder="Orientation..."></textarea>
+<textarea placeholder="Complication..."></textarea>
+<textarea placeholder="Resolution..."></textarea>
+<button onclick="submitStory()">Kirim Cerita</button>
+
+</div>
+
+<div class="nav-buttons">
+<button class="nav-btn" onclick="goBack()">⬅ Back</button>
+</div>
+
+<div id="popup" class="popup"></div>
+
+<script>
+
+let isEnglish = true;
+
+/* ================= TEXT (100% SESUAI) ================= */
+
+const data = {
+orientation:{
+en:`In a village called Dadapan, there was a widow named Mak Dadapan. She had two daughters, Bawang Putih, who was her stepdaughter and Bawang Merah, a daughter of her own. Mak Dadapan did not treat them in the same way. For her own daughter, she was very tolerant. Bawang Merah could do and get everything she wanted and she did not like helping her mother with household matters. For Bawang Putih, her stepmother was very severe. This girl had to do everything at home.`,
+id:`Di sebuah desa bernama Dadapan, ada seorang janda bernama Mak Dadapan. Dia memiliki dua anak perempuan, Bawang Putih, yang merupakan anak tirinya dan Bawang Merah, anak kandungnya sendiri. Mak Dadapan tidak memperlakukan mereka dengan cara yang sama. Untuk putrinya sendiri, dia sangat toleran. Bawang Merah bisa melakukan dan mendapatkan semua yang dia inginkan dan dia tidak suka membantu ibunya dalam urusan rumah tangga. Bagi Bawang Putih, ibu tirinya sangat kejam. Gadis ini harus melakukan segalanya di rumah.`
+},
+complication:{
+en:`One day, Bawang Putih had to wash clothes at the river. She was tired and did not notice that a piece of clothing was dragged by the stream. The stepmother was furious. Then she let her look for the piece of clothing on the riverbank. Bawang Putih returned to the river and followed the stream. She met a man who was bathing his horse on the riverside. Then Bawang Putih walked away. She saw an old woman who was fishing on the riverside. Who was in fact the old woman? She was a demon called Nini Buto Ijo. On arriving at Nini Buto Ijo’s house, Bawang Putih was frightened because she was in the demon’s house. Any utensil was different, from what she used at home. The next morning, Nini Buto Ijo gave her a piece of cloth and melon. Bawang Putih walked home as quickly as she could. On arriving at home, the stepmother took a piece of clothing and melon from Bawang Putih’s hands. Quickly, she opened the melon. Wow! Gold, silver, and precious stones! Bawang Merah wanted to get the same melon as Bawang Putih’s. She found and met Nini Buto Ijo but she refused to help her clean her house. After a while, she asked permission to get back home. Nini Buto Ijo gave her the melon, too. She went home in a hurry and opened as soon as she got home. Instead of gold, silver, and precious stones, that melon was filled with insects and crawling animals`,
+id:`Suatu hari, Bawang Putih harus mencuci pakaian di sungai. Dia lelah dan tidak menyadari bahwa sepotong pakaian hanyut terbawa arus. Ibu tirinya sangat marah. Kemudian dia membiarkannya mencari potongan pakaian itu di tepi sungai. Bawang Putih kembali ke sungai dan mengikuti aliran sungai. Dia bertemu dengan seorang pria yang sedang memandikan kudanya di tepi sungai. Kemudian Bawang Putih berjalan pergi. Dia melihat seorang wanita tua yang sedang memancing di tepi sungai. Siapakah sebenarnya wanita tua itu? Dia adalah raksasa bernama Nini Buto Ijo. Setibanya di rumah Nini Buto Ijo, Bawang Putih ketakutan karena berada di rumah raksasa. Peralatan apa pun berbeda dari yang dia gunakan di rumah. Keesokan paginya, Nini Buto Ijo memberinya sepotong kain dan melon. Bawang Putih berjalan pulang secepat yang dia bisa. Setibanya di rumah, ibu tiri mengambil potongan kain dan melon dari tangan Bawang Putih. Dengan cepat, dia membuka melon itu. Wah! Emas, perak, dan batu mulia! Bawang Merah ingin mendapatkan melon yang sama seperti milik Bawang Putih. Dia mencari rumah Nini Buto Ijo. Dia menemukan dan bertemu Nini Buto Ijo tetapi dia menolak untuk membantunya membersihkan rumahnya. Setelah beberapa saat, dia meminta izin untuk kembali ke rumah. Nini Buto Ijo memberinya melon juga. Dia pulang terburu-buru dan membukanya begitu sampai di rumah. Alih-alih emas, perak, dan batu mulia, melon itu berisi serangga dan hewan merayap`
+},
+resolution:{
+en:`Bawang Merah and Mak Dadapan, who were greedy, ran away in great fear.`,
+id:`Bawang Merah dan Mak Dadapan, yang serakah, lari ketakutan.`
+}
+};
+
+/* ================= VOCAB ================= */
+
+const vocabList = {
+"was":"Adalah (V1: is/am/are)",
+"were":"Adalah (V1: is/am/are)",
+"had":"Memiliki (V1: have)",
+"did":"Melakukan (V1: do)",
+"wanted":"Ingin (V1: want)",
+"let":"Membiarkan (V1: let)",
+"returned":"Kembali (V1: return)",
+"followed":"Mengikuti (V1: follow)",
+"met":"Bertemu (V1: meet)",
+"walked":"Berjalan (V1: walk)",
+"saw":"Melihat (V1: see)",
+"used":"Menggunakan (V1: use)",
+"gave":"Memberikan (V1: give)",
+"could":"Bisa (V1: can)",
+"took":"Mengambil (V1: take)",
+"opened":"Membuka (V1: open)",
+"found":"Menemukan (V1: find)",
+"refused":"Menolak (V1: refuse)",
+"asked":"Meminta (V1: ask)",
+"went":"Pergi (V1: go)",
+"got":"Sampai (V1: get)",
+"ran":"Berlari (V1: run)"
+};
+
+/* ================= LOAD ================= */
+
+function applyVocab(text){
+for(let word in vocabList){
+let regex = new RegExp("\\b"+word+"\\b","gi");
+text = text.replace(regex, `<span class="vocab" onclick="showPopup('${vocabList[word]}')">${word}</span>`);
+}
+return text;
+}
+
+function render(){
+let lang = isEnglish ? "en" : "id";
+
+document.getElementById("orientation").innerHTML = applyVocab(data.orientation[lang]);
+document.getElementById("complication").innerHTML = applyVocab(data.complication[lang]);
+document.getElementById("resolution").innerHTML = applyVocab(data.resolution[lang]);
+}
+
+function toggleTranslate(){
+isEnglish = !isEnglish;
+render();
+}
+
+function showPopup(text){
+let popup = document.getElementById("popup");
+popup.innerText = text;
+popup.style.display="block";
+setTimeout(()=>popup.style.display="none",2000);
+}
+
+function goBack(){
+window.location.href="section10.html";
+}
+
+function submitStory(){
+
+let orientation = document.querySelectorAll("textarea")[0].value;
+let complication = document.querySelectorAll("textarea")[1].value;
+let resolution = document.querySelectorAll("textarea")[2].value;
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let id = localStorage.getItem("userId");
+
+let index = students.findIndex(s => s.id == id);
+if(index === -1){
+students.push({
+nama,
+kelas,
+stories: []
+});
+index = students.length - 1;
+}
+
+if(!students[index].stories){
+students[index].stories = [];
+}
+
+students[index].stories.push({
+cerita: "bawang", // ganti sesuai file
+orientation,
+complication,
+resolution
+});
+
+localStorage.setItem("students", JSON.stringify(students));
+
+alert("Cerita tersimpan!");
+}
+
+render();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golden Eggs</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#f5e6c8,#e8d2a8);
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1{text-align:center;}
+
+.section-title{
+margin-top:20px;
+font-weight:bold;
+color:#7a4b1f;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#7a4b1f;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+textarea{
+width:100%;
+height:100px;
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+}
+
+.vocab{
+color:#d35400;
+font-weight:bold;
+cursor:pointer;
+}
+
+.popup{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:black;
+color:white;
+padding:10px 20px;
+border-radius:10px;
+display:none;
+z-index:9999;
+}
+
+.nav-buttons{
+position:fixed;
+bottom:20px;
+left:0;
+width:100%;
+display:flex;
+justify-content:flex-start;
+padding:0 20px;
+z-index:9999;
+pointer-events:none;
+}
+
+.nav-btn{
+pointer-events:auto;
+padding:12px 22px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-weight:600;
+background:linear-gradient(135deg,#6c63ff,#a18cd1);
+color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Golden Eggs</h1>
+
+<button onclick="toggleTranslate()">🌐 Translate</button>
+
+<audio controls style="width:100%; margin-top:10px;">
+<source src="audio/Golden Eggs.mp3">
+</audio>
+
+<div class="section-title">Orientation</div>
+<p id="orientation"></p>
+
+<div class="section-title">Complication</div>
+<p id="complication"></p>
+
+<div class="section-title">Resolution</div>
+<p id="resolution"></p>
+
+<hr>
+
+<h3>Create Your Own Story</h3>
+<textarea placeholder="Orientation..."></textarea>
+<textarea placeholder="Complication..."></textarea>
+<textarea placeholder="Resolution..."></textarea>
+<button onclick="submitStory()">Kirim Cerita</button>
+
+</div>
+
+<div class="nav-buttons">
+<button class="nav-btn" onclick="goBack()">⬅ Back</button>
+</div>
+
+<div id="popup" class="popup"></div>
+
+<script>
+
+let isEnglish = true;
+
+/* ================= TEXT (ASLI 100%) ================= */
+
+const data = {
+
+orientation:{
+en:`Long time ago, a remote village in Central China was inhabited mainly with farmers and hunters. One day, a poor farmer lost his entire livestock to flood. He prayed hard to God for help or his family would die of starvation. Few days later, an old man with long grey beard, passed by his house and took pity on him. He gave him a goose and said, “I don’t have any expensive thing to give you and hope this goose will help you to ease your hardship.” A week later, to almost surprise, the farmer found an egg in his yard. This was not ordinary egg. It was a golden egg. He was suddenly overcome with joy.`,
+id:`Dahulu kala, sebuah desa terpencil di China Tengah dihuni terutama oleh petani dan pemburu. Suatu hari, seorang petani miskin kehilangan seluruh hewan ternaknya karena banjir. Ia berdoa sungguh-sungguh kepada Tuhan untuk meminta bantuan atau keluarganya akan mati kelaparan. Beberapa hari kemudian, seorang pria tua berjenggot abu-abu panjang lewat di depan rumahnya dan merasa kasihan padanya. Ia memberinya seekor angsa dan berkata, “Aku tidak punya barang mahal untuk diberikan kepadamu dan berharap angsa ini akan membantumu meringankan penderitaanmu.” Seminggu kemudian, yang hampir mengejutkan, petani itu menemukan sebutir telur di halamannya. Ini bukan telur biasa. Itu adalah telur emas. Ia tiba-tiba diliputi kegembiraan.`
+},
+
+complication:{
+en:`Thereafter, his livelihood had rapidly improved, but the farmer had forgotten his earlier hardship. He became lazy, arrogant, and spendthrift. Strangely, the goose only laid one golden egg every six months. The greedy farmer lost his patience and slaughtered his goose thinking there were plenty of golden eggs inside its stomach.`,
+id:`Setelah itu, mata pencahariannya meningkat pesat, tetapi petani itu telah melupakan penderitaan sebelumnya. Ia menjadi malas, sombong, dan boros. Anehnya, angsa itu hanya bertelur satu telur emas setiap enam bulan. Petani yang serakah itu kehilangan kesabarannya dan menyembelih angsanya karena mengira ada banyak telur emas di dalam perutnya.`
+},
+
+resolution:{
+en:`Though he very much regretted for his foolishness, it's already too late.`,
+id:`Meskipun ia sangat menyesali kebodohannya, semuanya sudah terlambat.`
+}
+
+};
+
+/* ================= VOCAB ================= */
+
+const vocabList = {
+"was":"Adalah (V1: is/am)",
+"lost":"Kehilangan (V1: lose)",
+"prayed":"Berdoa (V1: pray)",
+"passed":"Melewati (V1: pass)",
+"took":"Mengambil (V1: take)",
+"gave":"Memberi (V1: give)",
+"said":"Berkata (V1: say)",
+"found":"Menemukan (V1: find)",
+"became":"Menjadi (V1: become)",
+"laid":"Bertelur (V1: lay)",
+"slaughtered":"Menyembelih (V1: slaughter)",
+"were":"Adalah jamak (V1: are)",
+"regretted":"Menyesali (V1: regret)"
+};
+
+/* ================= RENDER ================= */
+
+function applyVocab(text){
+for(let word in vocabList){
+let regex = new RegExp("\\b"+word+"\\b","gi");
+text = text.replace(regex, `<span class="vocab" onclick="showPopup('${vocabList[word]}')">${word}</span>`);
+}
+return text;
+}
+
+function render(){
+let lang = isEnglish ? "en" : "id";
+
+document.getElementById("orientation").innerHTML = applyVocab(data.orientation[lang]);
+document.getElementById("complication").innerHTML = applyVocab(data.complication[lang]);
+document.getElementById("resolution").innerHTML = applyVocab(data.resolution[lang]);
+}
+
+function toggleTranslate(){
+isEnglish = !isEnglish;
+render();
+}
+
+function showPopup(text){
+let popup = document.getElementById("popup");
+popup.innerText = text;
+popup.style.display="block";
+setTimeout(()=>popup.style.display="none",2000);
+}
+
+function goBack(){
+window.location.href="section10.html";
+}
+
+function submitStory(){
+
+let orientation = document.querySelectorAll("textarea")[0].value;
+let complication = document.querySelectorAll("textarea")[1].value;
+let resolution = document.querySelectorAll("textarea")[2].value;
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let id = localStorage.getItem("userId");
+
+let index = students.findIndex(s => s.id == id);
+if(index === -1){
+students.push({
+nama,
+kelas,
+stories: []
+});
+index = students.length - 1;
+}
+
+if(!students[index].stories){
+students[index].stories = [];
+}
+
+students[index].stories.push({
+cerita: "golden", // ganti sesuai file
+orientation,
+complication,
+resolution
+});
+
+localStorage.setItem("students", JSON.stringify(students));
+
+alert("Cerita tersimpan!");
+}
+
+render();
+
+</script>
+
+</body>
+</html>

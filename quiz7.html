@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Simple Past Tense</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<section class="section3">
+<div class="content-box">
+
+<h1>Quiz Simple Past Tense 🎯</h1>
+
+<form id="quizForm">
+
+<!-- 1 -->
+<p>1. Rina ___ to school yesterday because she was sick.</p>
+<label><input type="radio" name="q1" value="A"> A. doesn’t go</label><br>
+<label><input type="radio" name="q1" value="B"> B. didn’t go</label><br>
+<label><input type="radio" name="q1" value="C"> C. don’t go</label><br>
+<label><input type="radio" name="q1" value="D"> D. not go</label><br>
+
+<!-- 2 -->
+<p>2. “They visited the museum last week.” Why use past tense?</p>
+<label><input type="radio" name="q2" value="A"> A. It tells future plan</label><br>
+<label><input type="radio" name="q2" value="B"> B. It tells present action</label><br>
+<label><input type="radio" name="q2" value="C"> C. It tells past event</label><br>
+<label><input type="radio" name="q2" value="D"> D. It tells opinion</label><br>
+
+<!-- 3 -->
+<p>3. Which sentence shows an action in the past?</p>
+<label><input type="radio" name="q3" value="A"> A. She is reading a book</label><br>
+<label><input type="radio" name="q3" value="B"> B. She reads a book</label><br>
+<label><input type="radio" name="q3" value="C"> C. She read a book yesterday</label><br>
+<label><input type="radio" name="q3" value="D"> D. She will read a book</label><br>
+
+<!-- 4 -->
+<p>4. Doni lived in Jakarta for three years. This means…</p>
+<label><input type="radio" name="q4" value="A"> A. He still lives there</label><br>
+<label><input type="radio" name="q4" value="B"> B. He will live there</label><br>
+<label><input type="radio" name="q4" value="C"> C. He lived there in the past</label><br>
+<label><input type="radio" name="q4" value="D"> D. He never lived there</label><br>
+
+<!-- 5 -->
+<p>5. When I was a child, I always ___ in the river.</p>
+<label><input type="radio" name="q5" value="A"> A. swim</label><br>
+<label><input type="radio" name="q5" value="B"> B. swam</label><br>
+<label><input type="radio" name="q5" value="C"> C. swims</label><br>
+<label><input type="radio" name="q5" value="D"> D. swimming</label><br>
+
+<!-- 6 -->
+<p>6. “I was very happy when my friend came.” This shows…</p>
+<label><input type="radio" name="q6" value="A"> A. Future plan</label><br>
+<label><input type="radio" name="q6" value="B"> B. Past emotion</label><br>
+<label><input type="radio" name="q6" value="C"> C. Present activity</label><br>
+<label><input type="radio" name="q6" value="D"> D. Habit</label><br>
+
+<!-- 7 -->
+<p>7. Which sentence is NOT correct?</p>
+<label><input type="radio" name="q7" value="A"> A. She went to school yesterday</label><br>
+<label><input type="radio" name="q7" value="B"> B. They played football last week</label><br>
+<label><input type="radio" name="q7" value="C"> C. He go to school yesterday</label><br>
+<label><input type="radio" name="q7" value="D"> D. We visited our teacher</label><br>
+
+<!-- 8 -->
+<p>8. She did not ___ coffee this morning.</p>
+<label><input type="radio" name="q8" value="A"> A. drank</label><br>
+<label><input type="radio" name="q8" value="B"> B. drinks</label><br>
+<label><input type="radio" name="q8" value="C"> C. drink</label><br>
+<label><input type="radio" name="q8" value="D"> D. drinking</label><br>
+
+<!-- 9 -->
+<p>9. “Did they watch the movie?”</p>
+<label><input type="radio" name="q9" value="A"> A. Yes, they watched</label><br>
+<label><input type="radio" name="q9" value="B"> B. Yes, they watch</label><br>
+<label><input type="radio" name="q9" value="C"> C. Yes, they watching</label><br>
+<label><input type="radio" name="q9" value="D"> D. Yes, they watches</label><br>
+
+<!-- 10 -->
+<p>10. Which sentence uses “were” correctly?</p>
+<label><input type="radio" name="q10" value="A"> A. She were happy</label><br>
+<label><input type="radio" name="q10" value="B"> B. I were tired</label><br>
+<label><input type="radio" name="q10" value="C"> C. They were excited</label><br>
+<label><input type="radio" name="q10" value="D"> D. He were sad</label><br>
+
+<br><br>
+<button type="button" onclick="checkQuiz()">Submit</button>
+
+</form>
+
+<div id="result"></div>
+
+<button onclick="back()">⬅ Back</button>
+
+</div>
+</section>
+
+<script>
+
+function checkQuiz(){
+
+const answers = {
+q1:"B", q2:"C", q3:"C", q4:"C", q5:"B",
+q6:"B", q7:"C", q8:"C", q9:"A", q10:"C"
+};
+
+let score = 0;
+let total = 10; // ✅ FIX PENTING
+let output = "";
+let userAnswers = {};
+
+for(let i=1;i<=10;i++){
+let q = "q"+i;
+let selected = document.querySelector(`input[name=${q}]:checked`);
+
+if(selected){
+userAnswers[q] = selected.value;
+
+if(selected.value === answers[q]){
+score++;
+output += `<p>Soal ${i}: ✅ Benar</p>`;
+}else{
+output += `<p>Soal ${i}: ❌ Salah (Jawaban benar: ${answers[q]})</p>`;
+}
+
+}else{
+userAnswers[q] = "-";
+output += `<p>Soal ${i}: ❌ Belum dijawab</p>`;
+}
+}
+
+document.getElementById("result").innerHTML =
+"<h3>Score: "+score+"/"+total+"</h3>" + output;
+
+/* ============================= */
+/* 🔥 SIMPAN KE LOCAL STORAGE */
+/* ============================= */
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let id = localStorage.getItem("userId");
+
+let index = students.findIndex(s => s.id == id);
+if(index === -1){
+students.push({
+nama,
+kelas,
+quiz5:{
+score,
+total,
+answers: userAnswers
+}
+});
+}else{
+students[index].quiz5 = {
+score,
+total,
+answers: userAnswers
+};
+}
+
+localStorage.setItem("students", JSON.stringify(students));
+
+alert("Score kamu: " + score + "/" + total);
+
+}
+
+/* ✅ FIX TOMBOL BACK */
+function back(){
+window.location.href = "section7.html";
+}
+
+</script>
+
+</body>
+</html>

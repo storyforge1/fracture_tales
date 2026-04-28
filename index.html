@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FractureTales</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<!-- SECTION 1 -->
+<section class="landing">
+
+<div class="overlay">
+
+<div class="form-box">
+
+<h2>Start Your Journey</h2>
+<p>Enter your identity</p>
+
+<input type="text" id="name" placeholder="Your Name">
+<input type="text" id="class" placeholder="Your Class">
+
+<button onclick="startJourney()">Start Journey</button>
+
+</div>
+
+</div>
+
+</section>
+
+<script>
+function startJourney(){
+
+const name = document.getElementById("name").value.trim();
+const kelas = document.getElementById("class").value.trim();
+
+if(name === "" || kelas === ""){
+alert("Isi dulu nama dan kelas!");
+return;
+}
+
+// ID unik
+const id = Date.now();
+
+// simpan user aktif
+localStorage.setItem("nama", name);
+localStorage.setItem("kelas", kelas);
+localStorage.setItem("userId", id);
+
+// ambil data lama
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+// tambah user baru (TIDAK MENGHAPUS DATA LAMA)
+students.push({
+id:id,
+nama:name,
+kelas:kelas,
+quiz1:{score:0},
+quiz2:{score:0},
+quiz3:{score:0},
+quiz4:{score:0},
+quiz5:{score:0},
+stories:[]
+});
+
+localStorage.setItem("students", JSON.stringify(students));
+
+window.location.href = "section2.html";
+}
+</script>
+
+</script>
+</script>
+
+</body>
+</html>

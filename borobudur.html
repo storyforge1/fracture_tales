@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Borobudur Temple</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#f5e6c8,#e8d2a8);
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1{text-align:center;}
+
+.section-title{
+margin-top:20px;
+font-weight:bold;
+color:#7a4b1f;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#7a4b1f;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+textarea{
+width:100%;
+height:100px;
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+}
+
+.vocab{
+color:#d35400;
+font-weight:bold;
+cursor:pointer;
+}
+
+.popup{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:black;
+color:white;
+padding:10px 20px;
+border-radius:10px;
+display:none;
+z-index:9999;
+}
+
+.nav-buttons{
+position:fixed;
+bottom:20px;
+left:0;
+width:100%;
+display:flex;
+justify-content:flex-start;
+padding:0 20px;
+z-index:9999;
+pointer-events:none;
+}
+
+.nav-btn{
+pointer-events:auto;
+padding:12px 22px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-weight:600;
+background:linear-gradient(135deg,#6c63ff,#a18cd1);
+color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>The Legend of Borobudur Temple</h1>
+
+<button onclick="toggleTranslate()">🌐 Translate</button>
+
+<audio controls style="width:100%; margin-top:10px;">
+<source src="audio/The Legend of Borobudur Temple.mp3">
+</audio>
+
+<div class="section-title">Orientation</div>
+<p id="orientation"></p>
+
+<div class="section-title">Complication</div>
+<p id="complication"></p>
+
+<div class="section-title">Resolution</div>
+<p id="resolution"></p>
+
+<hr>
+
+<h3>Create Your Own Story</h3>
+<textarea placeholder="Orientation..."></textarea>
+<textarea placeholder="Complication..."></textarea>
+<textarea placeholder="Resolution..."></textarea>
+<button onclick="submitStory()">Kirim Cerita</button>
+
+</div>
+
+<div class="nav-buttons">
+<button class="nav-btn" onclick="goBack()">⬅ Back</button>
+</div>
+
+<div id="popup" class="popup"></div>
+
+<script>
+
+let isEnglish = true;
+
+/* ================= TEXT ASLI ================= */
+
+const data = {
+
+orientation:{
+en:`Long ago, in the land of Central Java, there was a great kingdom ruled by a wise and kind king. The people lived peacefully, surrounded by green hills and fertile land. One day, the king dreamed of building a magnificent temple that would become the symbol of faith and harmony for all his people. He wanted it to reach the sky and reflect the light of wisdom for generations to come.`,
+id:`Dahulu kala, di tanah Jawa Tengah, ada sebuah kerajaan besar yang dipimpin oleh raja yang bijaksana dan baik hati. Rakyatnya hidup damai, dikelilingi oleh perbukitan hijau dan tanah yang subur. Suatu hari, raja bermimpi membangun sebuah kuil megah yang akan menjadi simbol keyakinan dan keharmonisan bagi seluruh rakyatnya. Dia ingin kuil itu mencapai langit dan memantulkan cahaya kebijaksanaan untuk generasi yang akan datang.`
+},
+
+complication:{
+en:`However, building such a grand temple was not easy. The workers had to lift heavy stones from faraway rivers and mountains. Day by day, they worked hard under the hot sun, yet the temple was still unfinished. The king began to worry that his dream would never come true. One night, a mysterious young man appeared before the king. He introduced himself as Gunadharma, a man with great knowledge and spiritual power. He promised to help the king finish the temple in one night, but with one condition: if by dawn someone spoke or made a sound, the work would stop and remain unfinished forever. The king agreed. As the night came, the sound of thunder and glowing lights surrounded the mountain. Stones flew through the air, shaping walls and stupas with magical speed. Everyone in the kingdom watched in silence, amazed and afraid. But just before dawn, a rooster crowed loudly.`,
+id:`Namun, membangun kuil semegah itu tidaklah mudah. Para pekerja harus mengangkat batu-batu berat dari sungai dan pegunungan yang jauh. Hari demi hari, mereka bekerja keras di bawah terik matahari, namun kuil itu masih belum selesai. Raja mulai khawatir mimpinya tidak akan pernah menjadi kenyataan. Suatu malam, seorang pemuda misterius muncul di hadapan raja. Ia memperkenalkan dirinya sebagai Gunadharma, seorang pria dengan pengetahuan dan kekuatan spiritual yang besar. Ia berjanji akan membantu raja menyelesaikan kuil itu dalam satu malam, namun dengan satu syarat: jika saat fajar ada orang yang berbicara atau mengeluarkan suara, pekerjaan itu akan terhenti dan tetap tidak selesai selamanya. Raja setuju. Saat malam tiba, suara guntur dan cahaya yang bersinar mengelilingi gunung. Batu-batu terbang di udara, membentuk dinding dan stupa dengan kecepatan magis. Semua orang di kerajaan menonton dalam diam, kagum sekaligus takut. Namun sesaat sebelum fajar, seekor ayam jantan berkokok dengan keras.`
+},
+
+resolution:{
+en:`The spell was broken, and Gunadharma vanished into the mist. The temple stood tall, but the top was never completed. The people believed that Gunadharma turned into the hill that lies near the temple, watching over Borobudur for eternity. The king was grateful even though the temple was unfinished, for it became a place of peace and meditation for all. Over time, Borobudur stood as one of the greatest wonders of the world.`,
+id:`Mantra pun terputus, dan Gunadharma menghilang ke dalam kabut. Kuil itu berdiri tegak, namun bagian puncaknya tidak pernah terselesaikan. Rakyat percaya bahwa Gunadharma berubah menjadi bukit yang terletak di dekat kuil, mengawasi Borobudur untuk selamanya. Raja bersyukur meskipun kuil itu belum selesai, karena kuil itu menjadi tempat kedamaian dan meditasi bagi semua orang. Seiring berjalannya waktu, Borobudur berdiri sebagai salah satu keajaiban terbesar di dunia.`
+}
+
+};
+
+/* ================= VOCAB ================= */
+
+const vocabList = {
+"was":"Adalah (V1: is/am)",
+"ruled":"Memimpin (V1: rule)",
+"lived":"Hidup (V1: live)",
+"surrounded":"Mengelilingi (V1: surround)",
+"dreamed":"Bermimpi (V1: dream)",
+"wanted":"Ingin (V1: want)",
+"had":"Memiliki (V1: have)",
+"worked":"Bekerja (V1: work)",
+"began":"Mulai (V1: begin)",
+"appeared":"Muncul (V1: appear)",
+"introduced":"Memperkenalkan (V1: introduce)",
+"promised":"Berjanji (V1: promise)",
+"spoke":"Berbicara (V1: speak)",
+"made":"Membuat (V1: make)",
+"agreed":"Menyetujui (V1: agree)",
+"came":"Datang (V1: come)",
+"flew":"Terbang (V1: fly)",
+"watched":"Menonton (V1: watch)",
+"crowed":"Berkokok (V1: crow)",
+"vanished":"Menghilang (V1: vanish)",
+"stood":"Berdiri (V1: stand)",
+"believed":"Percaya (V1: believe)",
+"turned":"Berubah (V1: turn)",
+"became":"Menjadi (V1: become)"
+};
+
+/* ================= LOGIC ================= */
+
+function applyVocab(text){
+for(let word in vocabList){
+let regex = new RegExp("\\b"+word+"\\b","gi");
+text = text.replace(regex, `<span class="vocab" onclick="showPopup('${vocabList[word]}')">${word}</span>`);
+}
+return text;
+}
+
+function render(){
+let lang = isEnglish ? "en" : "id";
+
+document.getElementById("orientation").innerHTML = applyVocab(data.orientation[lang]);
+document.getElementById("complication").innerHTML = applyVocab(data.complication[lang]);
+document.getElementById("resolution").innerHTML = applyVocab(data.resolution[lang]);
+}
+
+function toggleTranslate(){
+isEnglish = !isEnglish;
+render();
+}
+
+function showPopup(text){
+let popup = document.getElementById("popup");
+popup.innerText = text;
+popup.style.display="block";
+setTimeout(()=>popup.style.display="none",2000);
+}
+
+function goBack(){
+window.location.href="section10.html";
+}
+
+function submitStory(){
+
+let orientation = document.querySelectorAll("textarea")[0].value;
+let complication = document.querySelectorAll("textarea")[1].value;
+let resolution = document.querySelectorAll("textarea")[2].value;
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let id = localStorage.getItem("userId");
+
+let index = students.findIndex(s => s.id == id);
+if(index === -1){
+students.push({
+nama,
+kelas,
+stories: []
+});
+index = students.length - 1;
+}
+
+if(!students[index].stories){
+students[index].stories = [];
+}
+
+students[index].stories.push({
+cerita: "borobudur", // ganti sesuai file
+orientation,
+complication,
+resolution
+});
+
+localStorage.setItem("students", JSON.stringify(students));
+
+alert("Cerita tersimpan!");
+}
+
+render();
+
+</script>
+
+</body>
+</html>

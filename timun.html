@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timun Mas</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#f5e6c8,#e8d2a8);
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1{text-align:center;}
+
+.section-title{
+margin-top:20px;
+font-weight:bold;
+color:#7a4b1f;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#7a4b1f;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+textarea{
+width:100%;
+height:100px;
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+}
+
+.vocab{
+color:#d35400;
+font-weight:bold;
+cursor:pointer;
+}
+
+.popup{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:black;
+color:white;
+padding:10px 20px;
+border-radius:10px;
+display:none;
+z-index:9999;
+}
+
+.nav-buttons{
+position:fixed;
+bottom:20px;
+left:0;
+width:100%;
+display:flex;
+justify-content:flex-start;
+padding:0 20px;
+z-index:9999;
+pointer-events:none;
+}
+
+.nav-btn{
+pointer-events:auto;
+padding:12px 22px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-weight:600;
+background:linear-gradient(135deg,#6c63ff,#a18cd1);
+color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Timun Mas</h1>
+
+<button onclick="toggleTranslate()">🌐 Translate</button>
+
+<audio controls style="width:100%; margin-top:10px;">
+<source src="audio/Timun Mas.mp3">
+</audio>
+
+<div class="section-title">Orientation</div>
+<p id="orientation"></p>
+
+<div class="section-title">Complication</div>
+<p id="complication"></p>
+
+<div class="section-title">Resolution</div>
+<p id="resolution"></p>
+
+<hr>
+
+<h3>Create Your Own Story</h3>
+
+<textarea placeholder="Orientation..."></textarea>
+<textarea placeholder="Complication..."></textarea>
+<textarea placeholder="Resolution..."></textarea>
+
+<button onclick="submitStory()">Kirim Cerita</button>
+
+</div>
+
+<div class="nav-buttons">
+<button class="nav-btn" onclick="goBack()">⬅ Back</button>
+</div>
+
+<div id="popup" class="popup"></div>
+
+<script>
+
+let isEnglish = true;
+
+const data = {
+
+orientation:{
+en:`A long time ago, on the island of Java, Indonesia, lived a couple of farmers. They had been married for some years, but they had no children. So they prayed to a monster called Buta Ijo to give them children. Buta Ijo granted their wish on one condition: when their children had grown up, they had to sacrifice them to Buta Ijo. The farmers agreed to his condition.`,
+id:`Dahulu kala, di pulau Jawa, Indonesia, hiduplah sepasang petani. Mereka telah menikah selama beberapa tahun, tetapi mereka tidak memiliki anak. Maka mereka berdoa kepada raksasa bernama Buta Ijo untuk memberi mereka anak. Buta Ijo mengabulkan permintaan mereka dengan satu syarat: ketika anak-anak mereka sudah dewasa, mereka harus mengorbankannya kepada Buta Ijo. Para petani menyetujui syarat tersebut.`
+},
+
+complication:{
+en:`The wife gave birth to a beautiful baby girl named Timun Emas. When she was a teenager, Buta Ijo came to their house. Timun Emas was frightened, so she ran away to hide. Her parents had prepared several weapons for her: bamboo needles, seeds of cucumber, dressing, and salt.
+
+Buta Ijo realized she was gone and started running to chase her. Timun Emas spread the seeds of cucumber, and they turned into many vines. Buta Ijo grabbed and ate them. Then, she threw her bamboo needles, which turned into dense bamboo trees. Buta Ijo found it hard to pass. Next, she threw her dressing, and it turned into a lake. Buta Ijo was busy to save himself, but he could overcome it and continued chasing her.`,
+id:`Sang istri melahirkan seorang bayi perempuan cantik bernama Timun Emas. Ketika dia beranjak remaja, Buta Ijo datang ke rumah mereka. Timun Emas ketakutan, jadi dia lari untuk bersembunyi. Orang tuanya telah menyiapkan beberapa senjata untuknya: jarum bambu, biji mentimun, terasi, dan garam.
+
+Buta Ijo menyadari dia telah pergi dan mulai berlari mengejarnya. Timun Emas menebarkan biji mentimun, dan biji itu berubah menjadi banyak tanaman merambat. Buta Ijo mengambil dan memakannya. Kemudian, dia melemparkan jarum bambunya, yang berubah menjadi hutan bambu yang lebat. Buta Ijo merasa sulit untuk lewat. Selanjutnya, dia melemparkan terasinya, dan itu berubah menjadi danau. Buta Ijo sibuk menyelamatkan diri, tetapi dia bisa mengatasinya dan terus mengejarnya.`
+},
+
+resolution:{
+en:`Finally, when Timun Emas was almost caught, she threw her salt. Soon the land where Buta Ijo stood turned into an ocean. Buta Ijo was drowned and died instantly. Timun Emas was thankful to God and came back to her home safely.`,
+id:`Akhirnya, ketika Timun Emas hampir tertangkap, dia melemparkan garamnya. Tak lama kemudian tanah tempat Buta Ijo berdiri berubah menjadi lautan. Buta Ijo tenggelam dan mati seketika. Timun Emas bersyukur kepada Tuhan dan kembali ke rumahnya dengan selamat.`
+}
+
+};
+
+/* VOCAB LIST SESUAI YANG KAMU KIRIM */
+const vocabList = {
+"lived":"Tinggal (V1: Live)",
+"had":"Memiliki/Sudah (V1: Have)",
+"prayed":"Berdoa (V1: Pray)",
+"granted":"Mengabulkan (V1: Grant)",
+"agreed":"Menyetujui (V1: Agree)",
+"gave":"Memberi (V1: Give)",
+"named":"Menamai (V1: Name)",
+"came":"Datang (V1: Come)",
+"ran":"Berlari (V1: Run)",
+"said":"Berkata (V1: Say)",
+"arrived":"Tiba (V1: Arrive)",
+"realized":"Menyadari (V1: Realize)",
+"spread":"Menebar (V1: Spread)",
+"turned":"Berubah (V1: Turn)",
+"grabbed":"Meraih (V1: Grab)",
+"ate":"Makan (V1: Eat)",
+"threw":"Melempar (V1: Throw)",
+"found":"Menemukan (V1: Find)",
+"took":"Mengambil (V1: Take)",
+"chased":"Mengejar (V1: Chase)",
+"caught":"Menangkap (V1: Catch)",
+"stood":"Berdiri (V1: Stand)",
+"died":"Mati (V1: Die)"
+};
+
+/* LOAD */
+function loadText(){
+document.getElementById("orientation").innerText = data.orientation.en;
+document.getElementById("complication").innerText = data.complication.en;
+document.getElementById("resolution").innerText = data.resolution.en;
+applyVocab();
+}
+
+/* TRANSLATE */
+function toggleTranslate(){
+if(isEnglish){
+document.getElementById("orientation").innerText = data.orientation.id;
+document.getElementById("complication").innerText = data.complication.id;
+document.getElementById("resolution").innerText = data.resolution.id;
+}else{
+loadText();
+}
+isEnglish = !isEnglish;
+}
+
+/* VOCAB CLICK */
+function applyVocab(){
+["orientation","complication","resolution"].forEach(id=>{
+let el = document.getElementById(id);
+let text = el.innerText;
+
+for(let word in vocabList){
+let regex = new RegExp("\\b"+word+"\\b","gi");
+text = text.replace(regex, `<span class="vocab" onclick="showPopup('${vocabList[word]}')">${word}</span>`);
+}
+
+el.innerHTML = text;
+});
+}
+
+/* POPUP */
+function showPopup(text){
+let popup = document.getElementById("popup");
+popup.innerText = text;
+popup.style.display="block";
+setTimeout(()=>popup.style.display="none",2000);
+}
+
+/* BACK */
+function goBack(){
+window.location.href = "section10.html";
+}
+
+/* SUBMIT */
+function submitStory(){
+
+let orientation = document.querySelectorAll("textarea")[0].value;
+let complication = document.querySelectorAll("textarea")[1].value;
+let resolution = document.querySelectorAll("textarea")[2].value;
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let id = localStorage.getItem("userId");
+
+let index = students.findIndex(s => s.id == id);
+if(index === -1){
+students.push({
+nama,
+kelas,
+stories: []
+});
+index = students.length - 1;
+}
+
+if(!students[index].stories){
+students[index].stories = [];
+}
+
+students[index].stories.push({
+cerita: "timun", // ganti sesuai file
+orientation,
+complication,
+resolution
+});
+
+localStorage.setItem("students", JSON.stringify(students));
+
+alert("Cerita tersimpan!");
+}
+
+/* INIT */
+loadText();
+
+</script>
+
+</body>
+</html>

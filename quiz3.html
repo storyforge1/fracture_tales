@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz Language Features</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.quiz-container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+.question{
+margin:20px 0;
+padding:15px;
+background:white;
+border-radius:10px;
+}
+
+.correct{
+color:green;
+font-weight:bold;
+}
+
+.wrong{
+color:red;
+font-weight:bold;
+}
+
+.submit-btn{
+padding:12px 20px;
+background:#6c63ff;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+.back-btn{
+margin-top:20px;
+display:block;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+<h1>Quiz: Language Features</h1>
+
+<form id="quizForm">
+
+<!-- 1 -->
+<div class="question">
+<p>1. What is an action verb?</p>
+<label><input type="radio" name="q1" value="A"> A. A word that describes a place</label><br>
+<label><input type="radio" name="q1" value="B"> B. A word that shows an action</label><br>
+<label><input type="radio" name="q1" value="C"> C. A word that shows time</label><br>
+<label><input type="radio" name="q1" value="D"> D. A word that describes feeling</label>
+<p id="r1"></p>
+</div>
+
+<!-- 2 -->
+<div class="question">
+<p>2. Which of the following is an action verb?</p>
+<label><input type="radio" name="q2" value="A"> A. Beautiful</label><br>
+<label><input type="radio" name="q2" value="B"> B. Happy</label><br>
+<label><input type="radio" name="q2" value="C"> C. Run</label><br>
+<label><input type="radio" name="q2" value="D"> D. Slowly</label>
+<p id="r2"></p>
+</div>
+
+<!-- 3 -->
+<div class="question">
+<p>3. Which tense is mostly used in narrative text?</p>
+<label><input type="radio" name="q3" value="A"> A. Present</label><br>
+<label><input type="radio" name="q3" value="B"> B. Future</label><br>
+<label><input type="radio" name="q3" value="C"> C. Past</label><br>
+<label><input type="radio" name="q3" value="D"> D. Perfect</label>
+<p id="r3"></p>
+</div>
+
+<!-- 4 -->
+<div class="question">
+<p>4. Which sentence uses past tense correctly?</p>
+<label><input type="radio" name="q4" value="A"> A. She go yesterday</label><br>
+<label><input type="radio" name="q4" value="B"> B. She goes yesterday</label><br>
+<label><input type="radio" name="q4" value="C"> C. She went yesterday</label><br>
+<label><input type="radio" name="q4" value="D"> D. She going yesterday</label>
+<p id="r4"></p>
+</div>
+
+<!-- 5 -->
+<div class="question">
+<p>5. What is the function of time conjunction?</p>
+<label><input type="radio" name="q5" value="A"> A. Describe people</label><br>
+<label><input type="radio" name="q5" value="B"> B. Connect events in time</label><br>
+<label><input type="radio" name="q5" value="C"> C. Show feeling</label><br>
+<label><input type="radio" name="q5" value="D"> D. Explain place</label>
+<p id="r5"></p>
+</div>
+
+<!-- 6 -->
+<div class="question">
+<p>6. Which word is a time conjunction?</p>
+<label><input type="radio" name="q6" value="A"> A. Angry</label><br>
+<label><input type="radio" name="q6" value="B"> B. Then</label><br>
+<label><input type="radio" name="q6" value="C"> C. Run</label><br>
+<label><input type="radio" name="q6" value="D"> D. Big</label>
+<p id="r6"></p>
+</div>
+
+<!-- 7 -->
+<div class="question">
+<p>7. What is dialogue?</p>
+<label><input type="radio" name="q7" value="A"> A. Description</label><br>
+<label><input type="radio" name="q7" value="B"> B. Action</label><br>
+<label><input type="radio" name="q7" value="C"> C. Conversation</label><br>
+<label><input type="radio" name="q7" value="D"> D. Ending</label>
+<p id="r7"></p>
+</div>
+
+<!-- 8 -->
+<div class="question">
+<p>8. Example of dialogue?</p>
+<label><input type="radio" name="q8" value="A"> A. She was tired</label><br>
+<label><input type="radio" name="q8" value="B"> B. They ran</label><br>
+<label><input type="radio" name="q8" value="C"> C. "I am hungry"</label><br>
+<label><input type="radio" name="q8" value="D"> D. He went</label>
+<p id="r8"></p>
+</div>
+
+<!-- 9 -->
+<div class="question">
+<p>9. What is descriptive language used for?</p>
+<label><input type="radio" name="q9" value="A"> A. Connect time</label><br>
+<label><input type="radio" name="q9" value="B"> B. Show action</label><br>
+<label><input type="radio" name="q9" value="C"> C. Describe feeling</label><br>
+<label><input type="radio" name="q9" value="D"> D. Question</label>
+<p id="r9"></p>
+</div>
+
+<!-- 10 -->
+<div class="question">
+<p>10. Example descriptive language?</p>
+<label><input type="radio" name="q10" value="A"> A. Then</label><br>
+<label><input type="radio" name="q10" value="B"> B. Run</label><br>
+<label><input type="radio" name="q10" value="C"> C. Angry</label><br>
+<label><input type="radio" name="q10" value="D"> D. Went</label>
+<p id="r10"></p>
+</div>
+
+<button type="button" class="submit-btn" onclick="checkAnswers()">Submit</button>
+
+</form>
+
+<a href="section5.html" class="back-btn">⬅ Back</a>
+
+</div>
+
+<script>
+
+function checkAnswers(){
+
+const correct = {
+q1:"B", q2:"C", q3:"C", q4:"C", q5:"B",
+q6:"B", q7:"C", q8:"C", q9:"C", q10:"C"
+};
+
+let score = 0;
+let total = 10;
+let userAnswers = {};
+
+for(let i=1;i<=10;i++){
+
+let q = document.querySelector(`input[name="q${i}"]:checked`);
+let result = document.getElementById("r"+i);
+
+if(!q){
+result.innerHTML = "❌ Belum dijawab";
+result.className="wrong";
+userAnswers["q"+i] = "-";
+continue;
+}
+
+userAnswers["q"+i] = q.value;
+
+if(q.value === correct["q"+i]){
+result.innerHTML = "✔ Benar";
+result.className="correct";
+score++;
+}else{
+result.innerHTML = "❌ Salah (Jawaban: "+correct["q"+i]+")";
+result.className="wrong";
+}
+
+}
+
+/* ============================= */
+/* 🔥 SIMPAN KE LOCAL STORAGE */
+/* ============================= */
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let id = localStorage.getItem("userId");
+
+let index = students.findIndex(s => s.id == id);
+if(index === -1){
+
+students.push({
+nama,
+kelas,
+quiz3:{   // 🔥 INI QUIZ 3
+score,
+total,
+answers: userAnswers
+}
+});
+
+}else{
+
+students[index].quiz3 = {   // 🔥 INI QUIZ 3
+score,
+total,
+answers: userAnswers
+};
+
+}
+
+localStorage.setItem("students", JSON.stringify(students));
+
+/* TAMPILKAN SCORE */
+alert("Score kamu: " + score + "/" + total);
+
+}
+
+</script>
+
+</body>
+</html>

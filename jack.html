@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jack and the Beanstalk</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#f5e6c8,#e8d2a8);
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1{text-align:center;}
+
+.section-title{
+margin-top:20px;
+font-weight:bold;
+color:#7a4b1f;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#7a4b1f;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+textarea{
+width:100%;
+height:100px;
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+}
+
+.vocab{
+color:#d35400;
+font-weight:bold;
+cursor:pointer;
+}
+
+.popup{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:black;
+color:white;
+padding:10px 20px;
+border-radius:10px;
+display:none;
+z-index:9999;
+}
+
+.nav-buttons{
+position:fixed;
+bottom:20px;
+left:0;
+width:100%;
+display:flex;
+justify-content:flex-start;
+padding:0 20px;
+z-index:9999;
+pointer-events:none;
+}
+
+.nav-btn{
+pointer-events:auto;
+padding:12px 22px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-weight:600;
+background:linear-gradient(135deg,#6c63ff,#a18cd1);
+color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Jack and the Beanstalk</h1>
+
+<button onclick="toggleTranslate()">🌐 Translate</button>
+
+<audio controls style="width:100%; margin-top:10px;">
+<source src="audio/Jack and Beanstalk.mp3">
+</audio>
+
+<div class="section-title">Orientation</div>
+<p id="orientation"></p>
+
+<div class="section-title">Complication</div>
+<p id="complication"></p>
+
+<div class="section-title">Resolution</div>
+<p id="resolution"></p>
+
+<hr>
+
+<h3>Create Your Own Story</h3>
+<textarea placeholder="Orientation..."></textarea>
+<textarea placeholder="Complication..."></textarea>
+<textarea placeholder="Resolution..."></textarea>
+<button onclick="submitStory()">Kirim Cerita</button>
+
+</div>
+
+<div class="nav-buttons">
+<button class="nav-btn" onclick="goBack()">⬅ Back</button>
+</div>
+
+<div id="popup" class="popup"></div>
+
+<script>
+
+let isEnglish = true;
+
+/* ================= DATA ASLI ================= */
+
+const data = {
+
+orientation:{
+en:`Many years ago, there was a poor widow living with her only son, Jack, in a small cottage. They were so impoverished that their only valuable possession was an old cow. One day, the widow sent Jack to the market to sell the cow. On his way, he encountered a mysterious man who offered him five magic beans in exchange for the cow. Jack, being somewhat foolish, accepted the trade and returned home excitedly to show his mother the beans. However, she was furious and threw them out of the window in anger.`,
+id:`Bertahun-tahun yang lalu, ada seorang janda miskin yang tinggal bersama putra tunggalnya, Jack, di sebuah pondok kecil. Mereka begitu miskin sehingga satu-satunya harta berharga mereka adalah seekor sapi tua. Suatu hari, sang janda menyuruh Jack ke pasar untuk menjual sapi itu. Di tengah jalan, ia bertemu dengan seorang pria misterius yang menawarinya lima biji kacang ajaib sebagai ganti sapi itu. Jack, yang agak konyol, menerima pertukaran itu dan kembali ke rumah dengan gembira untuk menunjukkan kacang itu kepada ibunya. Namun, ibunya sangat marah dan melemparkannya ke luar jendela karena kesal.`
+},
+
+complication:{
+en:`The next morning, Jack awoke to find an enormous beanstalk reaching up into the sky where the beans had fallen. Curiosity got the better of him, and he climbed the beanstalk. At the top, he discovered a land inhabited by giants and stumbled upon a giant's castle. Inside, he met the giant's wife, who kindly fed him. But, the giant returned home, bellowing his famous chant, "I smell the blood of an Englishman!" To avoid being caught, Jack hid in a cupboard. Once the giant fell asleep after his meal, Jack seized the opportunity to steal a magical hen that laid golden eggs and a harp that could sing. However, as he made his escape down the beanstalk with his treasures, the harp cried out for help, waking the giant. The giant chased after Jack down the beanstalk.`,
+id:`Keesokan paginya, Jack terbangun dan menemukan pohon kacang raksasa menjulang ke langit di tempat biji kacang itu jatuh. Rasa penasaran menguasai dirinya, dan ia memanjat pohon kacang itu. Di puncaknya, ia menemukan sebuah negeri yang dihuni oleh para raksasa dan secara tidak sengaja menemukan kastel raksasa. Di dalam, ia bertemu dengan istri raksasa, yang dengan baik hati memberinya makan. Namun, raksasa itu kembali ke rumah, meneriakkan nyanyian terkenalnya, "Aku mencium darah orang Inggris!" Untuk menghindari penangkapan, Jack bersembunyi di dalam lemari. Begitu raksasa itu tertidur lelap setelah makan, Jack mengambil kesempatan untuk mencuri seekor ayam betina ajaib yang bertelur emas dan harpa yang bisa bernyanyi. Namun, saat ia melarikan diri turun dari pohon kacang dengan harta karunnya, harpa itu berteriak minta tolong, membangunkan raksasa itu. Raksasa itu mengejar Jack menuruni pohon kacang.`
+},
+
+resolution:{
+en:`In a panic, Jack called for his mother to bring an axe. As soon as she arrived with it, Jack chopped down the beanstalk just as the giant reached the bottom. The beanstalk fell, taking the giant with it, ensuring that he would never trouble them again. With their newfound wealth from the golden eggs and magical harp, Jack and his mother lived happily ever after.`,
+id:`Dalam kepanikan, Jack memanggil ibunya untuk membawakan kapak. Segera setelah ibunya tiba membawanya, Jack menebang pohon kacang itu tepat saat raksasa itu sampai di bawah. Pohon kacang itu tumbang, membawa raksasa itu bersamanya, memastikan bahwa dia tidak akan pernah mengganggu mereka lagi. Dengan kekayaan baru mereka dari telur emas dan harpa ajaib, Jack dan ibunya hidup bahagia selamanya.`
+}
+
+};
+
+/* ================= VOCAB ================= */
+
+const vocabList = {
+"sent":"Mengirim (V1: send)",
+"encountered":"Bertemu (V1: encounter)",
+"offered":"Menawarkan (V1: offer)",
+"accepted":"Menerima (V1: accept)",
+"returned":"Kembali (V1: return)",
+"threw":"Melempar (V1: throw)",
+"awoke":"Terbangun (V1: awake)",
+"had":"Memiliki (V1: have)",
+"got":"Mendapat (V1: get)",
+"climbed":"Memanjat (V1: climb)",
+"discovered":"Menemukan (V1: discover)",
+"stumbled":"Tidak sengaja menemukan (V1: stumble)",
+"met":"Bertemu (V1: meet)",
+"fed":"Memberi makan (V1: feed)",
+"hid":"Bersembunyi (V1: hide)",
+"fell":"Jatuh (V1: fall)",
+"seized":"Mengambil (V1: seize)",
+"laid":"Bertelur (V1: lay)",
+"could":"Bisa (V1: can)",
+"made":"Melakukan (V1: make)",
+"cried":"Berteriak (V1: cry)",
+"chased":"Mengejar (V1: chase)",
+"called":"Memanggil (V1: call)",
+"arrived":"Tiba (V1: arrive)",
+"chopped":"Menebang (V1: chop)",
+"reached":"Sampai (V1: reach)",
+"lived":"Hidup (V1: live)"
+};
+
+/* ================= FUNCTION ================= */
+
+function applyVocab(text){
+for(let word in vocabList){
+let regex = new RegExp("\\b"+word+"\\b","gi");
+text = text.replace(regex, `<span class="vocab" onclick="showPopup('${vocabList[word]}')">${word}</span>`);
+}
+return text;
+}
+
+function render(){
+let lang = isEnglish ? "en" : "id";
+document.getElementById("orientation").innerHTML = applyVocab(data.orientation[lang]);
+document.getElementById("complication").innerHTML = applyVocab(data.complication[lang]);
+document.getElementById("resolution").innerHTML = applyVocab(data.resolution[lang]);
+}
+
+function toggleTranslate(){
+isEnglish = !isEnglish;
+render();
+}
+
+function showPopup(text){
+let popup = document.getElementById("popup");
+popup.innerText = text;
+popup.style.display="block";
+setTimeout(()=>popup.style.display="none",2000);
+}
+
+function goBack(){
+window.location.href="section10.html";
+}
+
+function submitStory(){
+
+let orientation = document.querySelectorAll("textarea")[0].value;
+let complication = document.querySelectorAll("textarea")[1].value;
+let resolution = document.querySelectorAll("textarea")[2].value;
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let id = localStorage.getItem("userId");
+
+let index = students.findIndex(s => s.id == id);
+if(index === -1){
+students.push({
+nama,
+kelas,
+stories: []
+});
+index = students.length - 1;
+}
+
+if(!students[index].stories){
+students[index].stories = [];
+}
+
+students[index].stories.push({
+cerita: "jack", // ganti sesuai file
+orientation,
+complication,
+resolution
+});
+
+localStorage.setItem("students", JSON.stringify(students));
+
+alert("Cerita tersimpan!");
+}
+
+render();
+
+</script>
+
+</body>
+</html>

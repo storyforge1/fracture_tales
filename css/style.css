@@ -1,0 +1,873 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', sans-serif;
+}
+
+/* ================= SECTION 1 ================= */
+
+.landing{
+width:100%;
+height:100vh;
+background: url("../images/section-1.jpg") no-repeat center center/cover;
+position:relative;
+}
+
+.landing::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.25);
+}
+
+.overlay{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.form-box{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(15px);
+padding:40px 30px;
+border-radius:20px;
+text-align:center;
+color:white;
+width:320px;
+box-shadow:0 0 25px rgba(0,0,0,0.4);
+animation:fadeUp 1s ease;
+}
+
+.form-box h2{
+margin-bottom:10px;
+font-size:24px;
+}
+
+.form-box p{
+font-size:14px;
+margin-bottom:20px;
+opacity:0.8;
+}
+
+.form-box input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:10px;
+background:rgba(255,255,255,0.2);
+color:white;
+outline:none;
+}
+
+.form-box button{
+margin-top:15px;
+padding:12px;
+width:100%;
+border:none;
+border-radius:10px;
+background:cyan;
+color:black;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.form-box button:hover{
+background:lime;
+transform:scale(1.05);
+box-shadow:0 0 15px lime;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(40px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', sans-serif;
+}
+
+/* ================= SECTION 2 ================= */
+
+.section2{
+width:100%;
+min-height:100vh;
+background:url("../images/section-2.jpg");
+background-size: 100% 100%;
+background-position: center;
+background-repeat: no-repeat;
+/* overflow:hidden; HAPUS */
+}
+
+/* ================= MAGICAL BUTTON ================= */
+
+.magical-btn{
+position:absolute;
+
+/* posisi tombol (sudah disesuaikan dengan gambar) */
+top:54%;
+left:50%;
+transform:translate(-50%,-50%);
+
+/* ukuran RESPONSIVE */
+width:11vw;
+height:11vw;
+max-width:180px;
+max-height:180px;
+min-width:100px;
+min-height:100px;
+
+border-radius:45%;
+cursor:pointer;
+
+/* glow awal */
+box-shadow:0 0 15px rgba(255,255,255,0.3);
+
+/* animasi hidup */
+animation:pulseGlow 2.5s infinite ease-in-out;
+
+transition:transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* efek cahaya tambahan */
+.magical-btn::after{
+content:"";
+position:absolute;
+inset:0;
+border-radius:50%;
+background:radial-gradient(circle, rgba(0,255,255,0.35), transparent 70%);
+opacity:0;
+transition:opacity 0.3s ease;
+}
+
+/* hover (desktop) */
+.magical-btn:hover{
+transform:translate(-50%,-50%) scale(1.12);
+box-shadow:
+0 0 20px white,
+0 0 40px cyan,
+0 0 60px cyan;
+}
+
+.magical-btn:hover::after{
+opacity:1;
+}
+
+/* klik (mobile friendly) */
+.magical-btn:active{
+transform:translate(-50%,-50%) scale(0.95);
+box-shadow:0 0 20px white;
+}
+
+/* animasi glow berdenyut */
+@keyframes pulseGlow{
+0%{
+box-shadow:0 0 10px rgba(255,255,255,0.2);
+}
+50%{
+box-shadow:0 0 35px rgba(0,255,255,0.8);
+}
+100%{
+box-shadow:0 0 10px rgba(255,255,255,0.2);
+}
+}
+
+/* ================= RESPONSIVE HP ================= */
+
+@media(max-width:768px){
+
+.section2{
+background-position:center;
+}
+
+/* tombol diperbesar sedikit biar enak di tap */
+.magical-btn{
+width:140px;
+height:140px;
+top:55%;
+}
+
+/* matikan hover biar gak glitch di HP */
+.magical-btn:hover{
+transform:translate(-50%,-50%);
+box-shadow:0 0 25px rgba(0,255,255,0.7);
+}
+
+}
+
+/* extra kecil (hp kecil banget) */
+@media(max-width:480px){
+
+.magical-btn{
+width:120px;
+height:120px;
+top:57%;
+}
+
+}
+
+
+/* ================= GLOBAL FIX ================= */
+
+html, body{
+margin:0;
+padding:0;
+overflow-x:hidden;
+background:#f5e6c8;
+}
+
+/* ================= SECTION 3 ================= */
+
+.section3{
+min-height:100vh;
+width:100%;
+background:linear-gradient(135deg,#f5e6c8,#e8d2a8);
+display:flex;
+justify-content:center;
+align-items:center;
+padding:40px 20px;
+position:relative;
+overflow:hidden;
+}
+
+/* BACKGROUND DECOR */
+
+.section3::before{
+content:"";
+position:absolute;
+width:300px;
+height:300px;
+background:rgba(255,255,255,0.2);
+border-radius:50%;
+top:-80px;
+left:-80px;
+filter:blur(100px);
+z-index:0;
+}
+
+.section3::after{
+content:"";
+position:absolute;
+width:250px;
+height:250px;
+background:rgba(255,200,100,0.25);
+border-radius:50%;
+bottom:-80px;
+right:-80px;
+filter:blur(100px);
+z-index:0;
+}
+
+/* CONTENT */
+
+.content-box{
+position:relative;
+z-index:1;
+background:rgba(255,255,255,0.25);
+backdrop-filter:blur(12px);
+padding:35px;
+border-radius:20px;
+max-width:900px;
+width:100%;
+box-shadow:0 10px 40px rgba(0,0,0,0.2);
+}
+
+.content-box h1{
+text-align:center;
+margin-bottom:25px;
+color:#5a3a1a;
+}
+
+/* TEXT */
+
+.text-block{
+margin:25px 0;
+}
+
+.text-block h2{
+color:#7a4b1f;
+margin-bottom:8px;
+}
+
+.text-block p{
+color:#3d2b1f;
+line-height:1.7;
+}
+
+/* BUTTON KECIL */
+
+.btn-group{
+margin-top:10px;
+}
+
+.btn-group button{
+padding:7px 12px;
+border:none;
+border-radius:10px;
+background:#d4a017;
+color:white;
+cursor:pointer;
+margin-right:8px;
+transition:0.3s;
+}
+
+.btn-group button:hover{
+background:#ffbf00;
+transform:scale(1.1);
+}
+
+/* QUIZ BUTTON */
+
+.quiz-btn{
+text-align:center;
+margin-top:30px;
+}
+
+.quiz-btn button{
+padding:12px 25px;
+background:#7a4b1f;
+color:white;
+border:none;
+border-radius:12px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.quiz-btn button:hover{
+background:#a86b2d;
+transform:scale(1.08);
+box-shadow:0 0 15px rgba(0,0,0,0.3);
+}
+
+/* ================= GLOBAL NAV BUTTON FIX ================= */
+
+.nav-buttons{
+position:fixed;
+bottom:40px;
+left:0;
+width:100%;
+pointer-events:none;
+z-index:9999;
+}
+
+.nav-btn{
+position:absolute;
+pointer-events:auto;
+padding:14px 26px;
+border:none;
+border-radius:40px;
+cursor:pointer;
+font-weight:600;
+font-size:14px;
+letter-spacing:0.5px;
+transition:all 0.3s ease;
+overflow:hidden;
+}
+
+/* LEFT BUTTON */
+.nav-btn.left{
+left:20px;
+background:linear-gradient(135deg,#6c63ff,#a18cd1);
+color:white;
+box-shadow:0 0 15px rgba(108,99,255,0.4);
+}
+
+/* RIGHT BUTTON */
+.nav-btn.right{
+right:20px;
+background:linear-gradient(135deg,#ffd86b,#ff9a3c);
+color:black;
+box-shadow:0 0 15px rgba(255,165,0,0.4);
+}
+
+/* HOVER EFFECT */
+.nav-btn:hover{
+transform:translateY(-3px) scale(1.05);
+}
+
+/* CLICK */
+.nav-btn:active{
+transform:scale(0.95);
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+.nav-btn{
+font-size:11px;
+padding:10px 14px;
+}
+}
+
+.section4{
+min-height:100vh;
+background:linear-gradient(135deg,#f5e6c8,#e8d2a8);
+display:flex;
+justify-content:center;
+align-items:center;
+padding:40px 15px;
+}
+
+/* biar tengah lebih lebar & enak */
+.content-box{
+background:rgba(255,255,255,0.6);
+backdrop-filter:blur(12px);
+padding:40px;
+border-radius:20px;
+max-width:1100px; /* ⬅️ lebih lebar */
+width:100%;
+box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* tombol kecil diperbaiki */
+.btn-group button{
+padding:10px 14px;
+border:none;
+border-radius:10px;
+background:linear-gradient(135deg,#d4a017,#ffcc66);
+color:white;
+cursor:pointer;
+margin-top:10px;
+font-size:14px;
+transition:0.3s;
+}
+
+.btn-group button:hover{
+transform:scale(1.1);
+box-shadow:0 0 10px gold;
+}
+
+/* QUIZ BUTTON */
+.quiz-btn{
+text-align:center;
+margin-top:30px;
+}
+
+.quiz-btn button{
+padding:14px 30px;
+font-size:16px;
+border:none;
+border-radius:30px;
+background:linear-gradient(135deg,#7a4b1f,#c08a3e);
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+
+.quiz-btn button:hover{
+transform:scale(1.1);
+box-shadow:0 0 20px rgba(122,75,31,0.6);
+}
+
+
+/* MOBILE */
+@media(max-width:600px){
+
+.content-box{
+padding:25px;
+}
+
+.nav-btn{
+font-size:12px;
+padding:8px 14px;
+}
+
+}
+
+/* SECTION 10 BACKGROUND FULL */
+.section10{
+width:100%;
+height:100vh;
+
+/* 🔥 FIX UTAMA */
+background:url("../images/section-10.jpg") no-repeat center center;
+background-size:100% 100%; /* 🔥 ini bikin FULL pas layar */
+
+/* tambahan biar stabil */
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* CONTAINER CLICK */
+.click-area{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+}
+
+/* AREA TOMBOL (INVISIBLE) */
+.btn-story{
+position:absolute;
+cursor:pointer;
+border-radius:20px;
+transition:0.3s;
+}
+
+/* ✨ EFEK HOVER KEREN */
+.btn-story:hover{
+box-shadow:
+0 0 15px rgba(255,255,255,0.7),
+0 0 30px rgba(255,215,0,0.6),
+0 0 60px rgba(255,140,0,0.5);
+transform:scale(1.05);
+}
+
+/* ================= POSISI (SESUAI GAMBAR) ================= */
+
+/* ATAS */
+.malin{
+top:18%;
+left:18%;
+width:18%;
+height:22%;
+}
+
+.timun{
+top:18%;
+left:41%;
+width:18%;
+height:22%;
+}
+
+.bawang{
+top:18%;
+left:64%;
+width:18%;
+height:22%;
+}
+
+/* BAWAH */
+.golden{
+top:55%;
+left:18%;
+width:18%;
+height:22%;
+}
+
+.borobudur{
+top:55%;
+left:36%;
+width:20%;
+height:22%;
+}
+
+.jack{
+top:55%;
+left:58%;
+width:18%;
+height:22%;
+}
+
+.alice{
+top:55%;
+left:78%;
+width:18%;
+height:22%;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+.btn-story{
+border-radius:12px;
+}
+
+/* sedikit disesuaikan biar pas di HP */
+.malin{ top:20%; left:10%; width:30%; }
+.timun{ top:20%; left:50%; width:30%; }
+.bawang{ top:40%; left:30%; width:40%; }
+
+.golden{ top:60%; left:10%; width:30%; }
+.borobudur{ top:60%; left:45%; width:40%; }
+.jack{ top:78%; left:10%; width:30%; }
+.alice{ top:78%; left:50%; width:30%; }
+
+}
+
+/* ================= 🔥 ENHANCEMENT UI (TAMBAHAN) ================= */
+
+/* ✨ Smooth scroll global */
+html{
+scroll-behavior:smooth;
+}
+
+/* 🎨 Background subtle animation */
+body{
+animation:bgMove 12s infinite alternate;
+}
+
+@keyframes bgMove{
+0%{filter:hue-rotate(0deg);}
+100%{filter:hue-rotate(15deg);}
+}
+
+/* ✨ Fade masuk */
+.fade-in{
+opacity:0;
+transform:translateY(30px);
+animation:fadeUp2 1s ease forwards;
+}
+
+@keyframes fadeUp2{
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* 🌟 Glow text biar lebih HD */
+h1{
+text-shadow:0 0 10px rgba(255,255,255,0.4);
+}
+
+h2{
+text-shadow:0 0 5px rgba(255,200,100,0.4);
+}
+
+/* ================= 🎮 BUTTON EFFECT ================= */
+
+button{
+position:relative;
+overflow:hidden;
+}
+
+/* efek kilau lewat */
+button::before{
+content:"";
+position:absolute;
+top:0;
+left:-100%;
+width:100%;
+height:100%;
+background:linear-gradient(120deg,transparent,rgba(255,255,255,0.6),transparent);
+transition:0.6s;
+}
+
+button:hover::before{
+left:100%;
+}
+
+/* hover lebih hidup */
+button:hover{
+transform:scale(1.08);
+box-shadow:0 0 20px rgba(255,255,255,0.6);
+}
+
+/* ================= 🎯 CONTENT BOX HOVER ================= */
+
+.content-box{
+transition:0.4s;
+}
+
+.content-box:hover{
+transform:translateY(-8px) scale(1.01);
+box-shadow:0 25px 60px rgba(0,0,0,0.3);
+}
+
+/* ================= 🎈 FLOATING EFFECT (MENU / ICON) ================= */
+
+
+
+@keyframes floaty{
+0%,100%{transform:translate(-50%,-50%) translateY(0);}
+50%{transform:translate(-50%,-50%) translateY(-10px);}
+}
+
+/* ================= ✨ STORY BUTTON GLOW UPGRADE ================= */
+
+.btn-story{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(4px);
+}
+
+.btn-story:hover{
+box-shadow:
+0 0 20px white,
+0 0 40px gold,
+0 0 60px orange;
+}
+
+/* ================= 🎯 QUIZ FEEDBACK ANIMATION ================= */
+
+.correct{
+color:#00ff88;
+font-weight:bold;
+animation:pop 0.3s;
+}
+
+.wrong{
+color:#ff4d4d;
+font-weight:bold;
+animation:shake 0.3s;
+}
+
+@keyframes pop{
+0%{transform:scale(0.5);}
+100%{transform:scale(1);}
+}
+
+@keyframes shake{
+0%,100%{transform:translateX(0);}
+25%{transform:translateX(-5px);}
+75%{transform:translateX(5px);}
+}
+
+/* ================= 💡 NAV BUTTON LEBIH JELAS ================= */
+
+.nav-btn{
+backdrop-filter:blur(6px);
+}
+
+/* ================= 📱 FIX BIAR GAK KEPOTONG ================= */
+
+.nav-buttons{
+bottom:25px !important;
+}
+
+/* ================= 🌈 IMAGE FIX (ANTI ZOOM LAGI) ================= */
+
+.section2,
+.section10{
+background-size:contain !important;
+background-position:center !important;
+background-repeat:no-repeat !important;
+}
+
+/* ================= ✨ LOADING EFFECT SUPPORT ================= */
+
+#loader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:24px;
+z-index:9999;
+opacity:1;
+transition:1s;
+}
+
+body.loaded #loader{
+opacity:0;
+pointer-events:none;
+}
+#particles{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:0;
+}
+
+.particle{
+position:absolute;
+width:6px;
+height:6px;
+background:white;
+border-radius:50%;
+animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(100vh);}
+100%{transform:translateY(-10vh);}
+}
+
+/* ================= 🔥 MENU MATERI BUTTON UPGRADE ================= */
+
+.menu-circle{
+position:absolute;
+border-radius:50%;
+cursor:pointer;
+
+/* transparan + blur */
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(10px);
+
+/* glow halus */
+box-shadow:
+0 0 10px rgba(255,255,255,0.2),
+inset 0 0 15px rgba(255,255,255,0.1);
+
+transition:all 0.35s ease;
+
+/* biar bener2 bulat */
+aspect-ratio:1/1;
+
+/* animasi hidup */
+animation:floatCircle 4s ease-in-out infinite;
+}
+
+/* ✨ efek hover */
+.menu-circle:hover{
+transform:scale(1.15);
+box-shadow:
+0 0 20px white,
+0 0 40px cyan,
+0 0 60px rgba(0,255,255,0.6);
+}
+
+/* 🌟 ring animasi */
+.menu-circle::before{
+content:"";
+position:absolute;
+inset:-6px;
+border-radius:50%;
+border:2px solid rgba(255,255,255,0.2);
+opacity:0;
+transition:0.4s;
+}
+
+.menu-circle:hover::before{
+opacity:1;
+transform:scale(1.1);
+}
+
+/* ✨ sparkle kecil */
+.menu-circle::after{
+content:"";
+position:absolute;
+width:6px;
+height:6px;
+background:white;
+border-radius:50%;
+top:20%;
+left:25%;
+opacity:0.7;
+filter:blur(1px);
+}
+
+/* 🎈 floating animasi halus */
+@keyframes floatCircle{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-8px);}
+}

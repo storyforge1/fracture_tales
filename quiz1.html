@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz 1 Understanding Fractured Stories</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI', sans-serif;
+background:#f3e5c8;
+padding:20px;
+}
+
+.quiz-box{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+.question{
+margin-bottom:25px;
+}
+
+.question p{
+font-weight:bold;
+}
+
+label{
+display:block;
+margin:6px 0;
+cursor:pointer;
+padding:6px;
+border-radius:6px;
+}
+
+input[type="radio"]{
+margin-right:8px;
+}
+
+.result{
+margin-top:5px;
+font-weight:bold;
+}
+
+.submit-btn{
+margin-top:20px;
+padding:12px;
+width:100%;
+border:none;
+border-radius:10px;
+background:#c89b3c;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+.submit-btn:hover{
+background:#a67c2e;
+}
+
+.back-btn{
+display:block;
+margin-top:20px;
+text-align:center;
+text-decoration:none;
+background:#555;
+color:white;
+padding:12px;
+border-radius:10px;
+}
+
+.back-btn:hover{
+background:black;
+}
+
+@media(max-width:600px){
+.quiz-box{
+padding:15px;
+}
+}
+</style>
+
+</head>
+<body>
+
+<div class="quiz-box">
+
+<h2>Quiz: Understanding Fractured Stories 🎯</h2>
+
+<form id="quizForm">
+
+<!-- Q1 -->
+<div class="question">
+<p>1. According to the text, what is the main purpose of a narrative text?</p>
+<label><input type="radio" name="q1" value="A"> To provide scientific facts.</label>
+<label><input type="radio" name="q1" value="B"> To tell a story with a clear structure.</label>
+<label><input type="radio" name="q1" value="C"> To give instructions to the reader.</label>
+<label><input type="radio" name="q1" value="D"> To report daily news.</label>
+<div class="result" id="r1"></div>
+</div>
+
+<!-- Q2 -->
+<div class="question">
+<p>2. Which elements are usually included in the structure of a narrative text?</p>
+<label><input type="radio" name="q2" value="A"> Steps, materials, and goals.</label>
+<label><input type="radio" name="q2" value="B"> Introduction, arguments, and conclusion.</label>
+<label><input type="radio" name="q2" value="C"> Characters, setting, conflict, and resolution.</label>
+<label><input type="radio" name="q2" value="D"> Headlines and captions.</label>
+<div class="result" id="r2"></div>
+</div>
+
+<!-- Q3 -->
+<div class="question">
+<p>3. What is a "fractured story"?</p>
+<label><input type="radio" name="q3" value="A"> A story that is difficult to understand.</label>
+<label><input type="radio" name="q3" value="B"> A completely new and original story.</label>
+<label><input type="radio" name="q3" value="C"> A creative retelling or modification of a well-known story.</label>
+<label><input type="radio" name="q3" value="D"> A true story about a person's life history.</label>
+<div class="result" id="r3"></div>
+</div>
+
+<!-- Q4 -->
+<div class="question">
+<p>4. What does a fractured story keep from the original tale?</p>
+<label><input type="radio" name="q4" value="A"> Every single word of the dialogue.</label>
+<label><input type="radio" name="q4" value="B"> The basic elements of the story.</label>
+<label><input type="radio" name="q4" value="C"> Only the title of the story.</label>
+<label><input type="radio" name="q4" value="D"> The exact same ending.</label>
+<div class="result" id="r4"></div>
+</div>
+
+<!-- Q5 -->
+<div class="question">
+<p>5. Which parts of a story can be changed to create a "fracture"?</p>
+<label><input type="radio" name="q5" value="A"> The paper quality and font style.</label>
+<label><input type="radio" name="q5" value="B"> The plot, characters, or point of view.</label>
+<label><input type="radio" name="q5" value="C"> The grammar rules of the English language.</label>
+<label><input type="radio" name="q5" value="D"> The price of the book.</label>
+<div class="result" id="r5"></div>
+</div>
+
+<!-- Q6 -->
+<div class="question">
+<p>6. Why do writers often add humor or modern settings to fractured stories?</p>
+<label><input type="radio" name="q6" value="A"> To make the story shorter.</label>
+<label><input type="radio" name="q6" value="B"> To make the story fresh and engaging.</label>
+<label><input type="radio" name="q6" value="C"> To make the story harder for students to read.</label>
+<label><input type="radio" name="q6" value="D"> To prove that traditional stories are boring.</label>
+<div class="result" id="r6"></div>
+</div>
+
+<!-- Q7 -->
+<div class="question">
+<p>7. Why are fractured stories useful in education?</p>
+<label><input type="radio" name="q7" value="A"> They help students understand story structure and character development.</label>
+<label><input type="radio" name="q7" value="B"> They teach students how to memorize long paragraphs.</label>
+<label><input type="radio" name="q7" value="C"> They replace the need for reading traditional books.</label>
+<label><input type="radio" name="q7" value="D"> They focus only on teaching difficult vocabulary.</label>
+<div class="result" id="r7"></div>
+</div>
+
+<button type="button" class="submit-btn" onclick="checkQuiz()">Submit Answer</button>
+
+</form>
+
+<a href="section3.html" class="back-btn">⬅ Back to Material</a>
+
+</div>
+
+<script>
+
+/* JAWABAN BENAR */
+const correct = {
+q1: "B",
+q2: "C",
+q3: "C",
+q4: "B",
+q5: "B",
+q6: "B",
+q7: "A"
+};
+
+function checkQuiz(){
+
+let score = 0;
+let total = 7;
+let answers = {};
+
+for(let i=1;i<=7;i++){
+
+let q = document.querySelector(`input[name="q${i}"]:checked`);
+let result = document.getElementById(`r${i}`);
+
+if(!q){
+result.innerHTML="⚠️ Please answer this question";
+result.style.color="orange";
+continue;
+}
+
+answers[`q${i}`] = q.value;
+
+if(q.value === correct[`q${i}`]){
+result.innerHTML="✔️ Correct!";
+result.style.color="green";
+score++;
+}else{
+result.innerHTML=`❌ Wrong! Correct answer: ${correct[`q${i}`]}`;
+result.style.color="red";
+}
+
+}
+
+/* SIMPAN */
+saveQuiz(score,total,answers);
+
+alert(`Score kamu: ${score}/${total}`);
+
+}
+
+/* SIMPAN KE LOCAL STORAGE */
+function saveQuiz(score,total,answers){
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let id = localStorage.getItem("userId");
+
+let index = students.findIndex(s => s.id == id);
+
+if(index === -1){
+
+students.push({
+nama,
+kelas,
+quiz1:{   // 🔥 INI QUIZ 1
+score,
+total,
+answers
+}
+});
+
+}else{
+
+students[index].quiz1 = {   // 🔥 INI QUIZ 1
+score,
+total,
+answers
+};
+
+}
+
+localStorage.setItem("students", JSON.stringify(students));
+
+}
+
+</script>
+
+</body>
+</html>

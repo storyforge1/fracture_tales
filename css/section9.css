@@ -1,0 +1,46 @@
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+/* BACKGROUND FULL */
+.bg{
+width:100vw;
+height:100vh;
+object-fit:cover;
+position:fixed;
+top:0;
+left:0;
+}
+
+/* AREA KLIK */
+.click-area{
+position:absolute;
+
+/* POSISI (NANTI DISESUAIKAN) */
+top:75%;
+left:50%;
+transform:translate(-50%,-50%);
+
+width:260px;
+height:140px;
+
+cursor:pointer;
+z-index:10;
+
+/* AWALNYA KASIH WARNA BUAT NGESET POSISI */
+background:transparent;
+}
+
+/* EFEK HOVER */
+.click-area:hover{
+background:rgba(0,0,0,0.2);
+border-radius:10px;
+}
+
+/* EFEK KLIK */
+.click-area:active{
+transform:translate(-50%,-50%) scale(0.95);
+}
